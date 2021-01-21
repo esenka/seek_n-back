@@ -1,0 +1,4 @@
+ofxGui
+ofxNbackTest
+ofxOpenCv
+ofxSeekThermal
