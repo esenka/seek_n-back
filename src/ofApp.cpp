@@ -9,7 +9,7 @@ void ofApp::setup(){
     seek.setCVColorMap(cv::COLORMAP_BONE);
     seek.setVerbose(false);
     _img.allocate(THERMAL_WIDTH, THERMAL_HEIGHT, OF_IMAGE_COLOR);
-//    ofAddListener(seek.new_frame_evt, this, &ofApp::seekFrameCallback);
+    ofAddListener(seek.new_frame_evt, this, &ofApp::seekFrameCallback);
     
     nback.setup(3, 500, 2000, 0.2, ESEN_FONT_PATH);
 }
@@ -26,8 +26,8 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    nback.draw(512,384,400,400);
-    _img.draw(50,50);
+    nback.draw(512, 384, 400, 400);
+    _img.draw(50, 50);
 }
 
 //--------------------------------------------------------------
@@ -38,9 +38,15 @@ void ofApp::keyPressed(int key){
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
     switch(key){
-        case OF_KEY_LEFT_SHIFT:
+        case OF_KEY_LEFT_SHIFT:     // TRUE
+            if(!nback.isResponseSubmitted()){
+                nback.submitResponse(true);
+            }
             break;
-        case OF_KEY_RIGHT_SHIFT:
+        case OF_KEY_RIGHT_SHIFT:    // FALSE
+            if(!nback.isResponseSubmitted()){
+                nback.submitResponse(false);
+            }
             break;
         default:
             // no need to do nothing but put this just in case...
@@ -83,14 +89,16 @@ void ofApp::exit(){
     }
     seek.close();
     
-//    ofRemoveListener(seek.new_frame_evt, this, &ofApp::seekFrameCallback);
-    this->exitGui();
+    ofRemoveListener(seek.new_frame_evt, this, &ofApp::seekFrameCallback);
 }
 
 //--------------------------------------------------------------
 void ofApp::seekFrameCallback(bool &val){
+#ifdef VERBOSE_MODE
+    cout << __PRETTY_FUNCTION__ << endl;
+#endif
+    
     if(seek.isInitialized()){
-        _img.setFromPixels(seek.getVisualizePixels());
         if(_is_recording){
             cv::Mat buf;
             seek.getRawCVFrame(buf);
@@ -121,7 +129,7 @@ void ofApp::drawGui(ofEventArgs &args){
     gui.draw();
 }
 
-void ofApp::exitGui(){
+void ofApp::exitGui(ofEventArgs & args){
     _nback_running.removeListener(this, &ofApp::nbackCallback);
     _recording.removeListener(this, &ofApp::recordingCallback);
     _kill_app.removeListener(this, &ofApp::killAppCallback);

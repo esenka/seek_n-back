@@ -33,7 +33,7 @@ class ofApp : public ofBaseApp{
         ofxSeekThermalGrabber seek;
         ofxNbackTest nback;
         ofImage _img;
-        ofImage _rawImg;
+//        ofImage _rawImg;
         std::string _recording_path;
         unsigned int _seek_frame_number;
         bool _is_recording;
@@ -41,7 +41,7 @@ class ofApp : public ofBaseApp{
         // GUI WINDOW
         void setupGui();
         void drawGui(ofEventArgs & args);
-        void exitGui();
+        void exitGui(ofEventArgs & args);
         void nbackCallback(bool & val);
         void recordingCallback(bool & val);
         void killAppCallback(bool & val);

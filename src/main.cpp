@@ -20,7 +20,8 @@ int main( ){
 
 	shared_ptr<ofApp> mainApp(new ofApp);
 	mainApp->setupGui();
-	ofAddListener(guiWindow->events().draw,mainApp.get(),&ofApp::drawGui);
+	ofAddListener(guiWindow->events().draw, mainApp.get(), &ofApp::drawGui);
+    ofAddListener(guiWindow->events().exit, mainApp.get(), &ofApp::exitGui);
 
 	ofRunApp(mainWindow, mainApp);
 	ofRunMainLoop();
