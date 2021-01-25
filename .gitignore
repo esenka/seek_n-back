@@ -2,3 +2,5 @@
 bin/*.app*
 *.DS_*
 *.xcworkspacedata
+*.pgm
+*.csv
