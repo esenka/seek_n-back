@@ -9,6 +9,8 @@ and the project requires ofxGui and ofxOpenCv, which is bundled to the OF packag
 ### Open the project...
 You should be good to go with the project, but you may need to reload addons using projectGenerator or modify the project settings to be able to compile the project on your PC (especially in the case you use macOS 11)
 
+![GUI software overview](GUI-explain.png)
+
 ### Warning
 The project is using `pthread`, which is a part of the unix-based system to manage the threading and is not available in windows. Which means this project is not ready for the windows-based PC yet.
 
