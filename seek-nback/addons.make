@@ -1,3 +1,0 @@
-ofxNbackTest
-ofxOpenCv
-ofxSeekThermal
