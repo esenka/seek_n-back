@@ -1,4 +1,5 @@
 ofxGui
 ofxNbackTest
 ofxOpenCv
+ofxRHUtilities
 ofxSeekThermal

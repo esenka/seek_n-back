@@ -12,6 +12,16 @@ void ofApp::setup(){
     ofAddListener(seek.new_frame_evt, this, &ofApp::seekFrameCallback);
     
     nback.setup(3, 500, 2000, 0.2, ESEN_FONT_PATH);
+    ofAddListener(nback.new_char_evt, this, &ofApp::nbackNewCharCallback);
+    ofAddListener(nback.char_hidden_evt, this, &ofApp::nbackCharHiddenCallback);
+    
+    _csv_header.push_back("system_timestamp_millis");
+    _csv_header.push_back("system_status");     // START, STOP
+    _csv_header.push_back("frame_file_name");
+    _csv_header.push_back("nback_state");       // START, STOP, NEW, HIDDEN
+    _csv_header.push_back("nback_character");   // current character
+    _csv_header.push_back("nback_response");    // subject's response
+    _csv_header.push_back("nback_true_or_false");   // T/F
 }
 
 //--------------------------------------------------------------
@@ -41,11 +51,19 @@ void ofApp::keyReleased(int key){
         case OF_KEY_LEFT_SHIFT:     // TRUE
             if(!nback.isResponseSubmitted()){
                 nback.submitResponse(true);
+                csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                        "-", "-", "-",
+                                        nback.getLastCharacter(), "TRUE",
+                                        this->nbackResultToString(nback.isLastResponseTrue()));
             }
             break;
         case OF_KEY_RIGHT_SHIFT:    // FALSE
             if(!nback.isResponseSubmitted()){
                 nback.submitResponse(false);
+                csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                        "-", "-", "-",
+                                        nback.getLastCharacter(), "FALSE",
+                                        this->nbackResultToString(nback.isLastResponseTrue()));
             }
             break;
         default:
@@ -85,11 +103,15 @@ void ofApp::exit(){
     cout << __PRETTY_FUNCTION__ << endl;
 #endif
     if(nback.isTestRunning()){
+        csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                "ERROR", "-", "-", "-", "-", "-");
         nback.stop();
     }
     seek.close();
     
     ofRemoveListener(seek.new_frame_evt, this, &ofApp::seekFrameCallback);
+    ofRemoveListener(nback.new_char_evt, this, &ofApp::nbackNewCharCallback);
+    ofRemoveListener(nback.char_hidden_evt, this, &ofApp::nbackCharHiddenCallback);
 }
 
 //--------------------------------------------------------------
@@ -97,15 +119,57 @@ void ofApp::seekFrameCallback(bool &val){
 #ifdef VERBOSE_MODE
     cout << __PRETTY_FUNCTION__ << endl;
 #endif
-    
     if(seek.isInitialized()){
         if(_is_recording){
             cv::Mat buf;
             seek.getRawCVFrame(buf);
             ofxSeekThermal::writepgm(buf, _recording_path + "/" + _file_prefix.get(),
                                      _seek_frame_number, "", false);
+            std::ostringstream pgmfilename;
+            pgmfilename << _file_prefix.get();
+            pgmfilename << std::internal << std::setfill('0') << std::setw(6);
+            pgmfilename << _seek_frame_number;
+            pgmfilename << ".pgm";
+            csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                    "-",
+                                    pgmfilename.str(),
+                                    "-", nback.getLastCharacter(), "-", "-");
             _seek_frame_number++;
         }
+    }
+}
+
+//--------------------------------------------------------------
+void ofApp::nbackNewCharCallback(std::string &val){
+#ifdef VERBOSE_MODE
+    cout << __PRETTY_FUNCTION__ << endl;
+#endif
+    if(_is_recording){
+        csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                "-", "-", "NEW", val, "-", "-");
+    }
+}
+
+//--------------------------------------------------------------
+void ofApp::nbackCharHiddenCallback(bool &val){
+#ifdef VERBOSE_MODE
+    cout << __PRETTY_FUNCTION__ << endl;
+#endif
+    if(_is_recording){
+        csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                "-", "-", "HIDDEN", nback.getLastCharacter(), "-", "-");
+    }
+}
+
+//--------------------------------------------------------------
+std::string ofApp::nbackResultToString(int result){
+    switch(result){
+        case 0:
+            return "FALSE";
+        case 1:
+            return "TRUE";
+        default:
+            return "NONE";
     }
 }
 
@@ -141,8 +205,16 @@ void ofApp::nbackCallback(bool & val){
 #endif
     if(val){
         nback.start();
+        if(_is_recording){
+            csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                    "-", "-", "START", nback.getLastCharacter(), "-", "-");
+        }
     }else{
         nback.stop();
+        if(_is_recording){
+            csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                    "-", "-", "STOP", nback.getLastCharacter(), "-", "-");
+        }
     }
 }
 
@@ -150,7 +222,7 @@ void ofApp::recordingCallback(bool & val){
 #ifdef VERBOSE_MODE
     cout << __PRETTY_FUNCTION__ << val << endl;
 #endif
-    if(val){
+    if(val){    // START
         if(!ofFilePath::isAbsolute(_file_path.get())){
             _recording_path = ofFilePath::getAbsolutePath(_file_path.get());
         }else{
@@ -159,17 +231,29 @@ void ofApp::recordingCallback(bool & val){
         if(!ofDirectory::doesDirectoryExist(_recording_path)){
             ofDirectory::createDirectory(_recording_path);
         }else{
-            // things
+            ofLogNotice("Directory is already there so another one will be made");
+            _recording_path += "-" + std::to_string(ofGetUnixTime());
+            ofDirectory::createDirectory(_recording_path);
         }
+        csv.start(_csv_header, _recording_path+"/log.csv");
+        csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                "START", "-", "-", nback.getLastCharacter(), "-", "-");
         _seek_frame_number = 0;
         _is_recording = true;
-    }else{
+    }else{      // STOP
+        csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                "STOP", "-", "-", "-", "-", "-");
+        csv.stop();
         _is_recording = false;
     }
 }
 
 void ofApp::killAppCallback(bool & val){
+#ifdef VERBOSE_MODE
+    cout << __PRETTY_FUNCTION__ << val << endl;
+#endif
     if(val){
         ofExit();
     }
 }
+

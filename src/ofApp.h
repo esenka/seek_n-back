@@ -4,6 +4,7 @@
 #include "ofxSeekThermal.h"
 #include "opencv2/opencv.hpp"
 #include "ofxNbackTest.hpp"
+#include "RHUtils.h"
 
 #include "ofxGui.h"
 
@@ -29,11 +30,15 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
   
         void seekFrameCallback(bool & val);
+        void nbackNewCharCallback(std::string & val);
+        void nbackCharHiddenCallback(bool & val);
+        std::string nbackResultToString(int result);
   
         ofxSeekThermalGrabber seek;
         ofxNbackTest nback;
         ofImage _img;
-//        ofImage _rawImg;
+        ofxRHUtilities::SimpleCsvLogger csv;
+        std::vector<std::string> _csv_header;
         std::string _recording_path;
         unsigned int _seek_frame_number;
         bool _is_recording;
