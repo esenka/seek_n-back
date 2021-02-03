@@ -3,3 +3,4 @@ ofxNbackTest
 ofxOpenCv
 ofxRHUtilities
 ofxSeekThermal
+ofxXmlSettings

@@ -8,9 +8,57 @@
 
 #include "ofxGui.h"
 
+// STUDY CONDITION SETUP
 #define ESEN_FONT_PATH "gt-pressura-regular.ttf"
 #define RYO_FONT_PATH "/System/Library/Fonts/SFNS.ttf"
+
+// paths to the mp3s
+// if it's in somewhere outside the project folder,
+// you can specify the paths in absolute path format
+// i.e. replacing "stimuli/HCLHV" to "/Users/esen/Documents/stimuli/HCLHV"
+#define HCLHV_PATH "stimuli/HCLHV"
+#define HCLLV_PATH "stimuli/HCLLV"
+#define LCLHV_PATH "stimuli/LCLHV"
+#define LCLLV_PATH "stimuli/LCLLV"
+
+// TIMING_SETUP
+#define STUDY_INTRO_TIME 1200000    // 20 minutes in MS
+#define STUDY_CALIB_TIME 60000      // 1 minute in MS
+#define STUDY_INTVL_TIME 300000     // 5 minutes in MS
+
+#define TRACKS_COUNT_FOR_EACH_SESSION 1
+
+// SYSTEM SETUP
 #define VERBOSE_MODE 1
+
+static std::map<std::string, std::string> _csv_header_and_value = {
+    {"system_timestamp_millis", ""},
+    {"system_state",            ""},
+    {"frame_file_name",         ""},
+    {"nback_state",             ""},
+    {"nback_character",         ""},
+    {"nback_response",          ""},
+    {"nback_true_or_false",     ""},
+    {"music_state",             ""},
+    {"music_id",                ""},
+    {"music_pos",               ""},
+    {"study_state",             ""},
+};
+/*
+csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                        "-",    // system_state (START/STOP/ERROR)
+                        "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                // HCLHV/HCLLV/LCLHV/LCLLV)
+                        "-",    // frame_file_name  (*.pgm)
+                        "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                        "-",    // nback_character (current character)
+                        "-",    // nback_response (subject's response)
+                        "-",    // nback_true_or_false (T/F)
+                        "-",    // music_state (START/STOP/ERROR)
+                        "-",    // music_id (*.mp3)
+                        "-"     // music_pos (0.0-1.0)
+                        );
+*/
 
 class ofApp : public ofBaseApp{
 
@@ -29,6 +77,7 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
   
+        // STUDY INPUT
         void seekFrameCallback(bool & val);
         void nbackNewCharCallback(std::string & val);
         void nbackCharHiddenCallback(bool & val);
@@ -42,6 +91,15 @@ class ofApp : public ofBaseApp{
         std::string _recording_path;
         unsigned int _seek_frame_number;
         bool _is_recording;
+        
+        // STUDY OUTPUT
+        bool lookupFilesInDir(std::string target_path,
+                              std::string extension,
+                              std::vector<std::string> & file_list);
+        
+        // STUDY MANAGEMENT
+        ofxRHUtilities::ThreadMap threadMap;
+        std::thread _thread;
   
         // GUI WINDOW
         void setupGui();

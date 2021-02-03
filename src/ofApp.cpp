@@ -15,13 +15,11 @@ void ofApp::setup(){
     ofAddListener(nback.new_char_evt, this, &ofApp::nbackNewCharCallback);
     ofAddListener(nback.char_hidden_evt, this, &ofApp::nbackCharHiddenCallback);
     
-    _csv_header.push_back("system_timestamp_millis");
-    _csv_header.push_back("system_status");     // START, STOP
-    _csv_header.push_back("frame_file_name");
-    _csv_header.push_back("nback_state");       // START, STOP, NEW, HIDDEN
-    _csv_header.push_back("nback_character");   // current character
-    _csv_header.push_back("nback_response");    // subject's response
-    _csv_header.push_back("nback_true_or_false");   // T/F
+    std::map<std::string, std::string>::iterator itr;
+    while(itr!=_csv_header_and_value.end()){
+        _csv_header.push_back(itr->first);
+        itr++;
+    }
 }
 
 //--------------------------------------------------------------
@@ -52,18 +50,36 @@ void ofApp::keyReleased(int key){
             if(!nback.isResponseSubmitted()){
                 nback.submitResponse(true);
                 csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
-                                        "-", "-", "-",
-                                        nback.getLastCharacter(), "TRUE",
-                                        this->nbackResultToString(nback.isLastResponseTrue()));
+                                        "-",    // system_state (START/STOP/ERROR)
+                                        "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                                // HCLHV/HCLLV/LCLHV/LCLLV)
+                                        "-",    // frame_file_name  (*.pgm)
+                                        "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                        nback.getLastCharacter(),    // nback_character (current character)
+                                        "TRUE",    // nback_response (subject's response)
+                                        this->nbackResultToString(nback.isLastResponseTrue()),    // nback_true_or_false (T/F)
+                                        "-",    // music_state (START/STOP/ERROR)
+                                        "-",    // music_id (*.mp3)
+                                        "-"     // music_pos (0.0-1.0)
+                                        );
             }
             break;
         case OF_KEY_RIGHT_SHIFT:    // FALSE
             if(!nback.isResponseSubmitted()){
                 nback.submitResponse(false);
                 csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
-                                        "-", "-", "-",
-                                        nback.getLastCharacter(), "FALSE",
-                                        this->nbackResultToString(nback.isLastResponseTrue()));
+                                        "-",    // system_state (START/STOP/ERROR)
+                                        "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                                // HCLHV/HCLLV/LCLHV/LCLLV)
+                                        "-",    // frame_file_name  (*.pgm)
+                                        "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                        nback.getLastCharacter(),    // nback_character (current character)
+                                        "FALSE",    // nback_response (subject's response)
+                                        this->nbackResultToString(nback.isLastResponseTrue()),    // nback_true_or_false (T/F)
+                                        "-",    // music_state (START/STOP/ERROR)
+                                        "-",    // music_id (*.mp3)
+                                        "-"     // music_pos (0.0-1.0)
+                                        );
             }
             break;
         default:
@@ -104,7 +120,19 @@ void ofApp::exit(){
 #endif
     if(nback.isTestRunning()){
         csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
-                                "ERROR", "-", "-", "-", "-", "-");
+                                "ERROR",    // system_state (START/STOP/ERROR)
+                                "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                        // HCLHV/HCLLV/LCLHV/LCLLV)
+                                "-",    // frame_file_name  (*.pgm)
+                                "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                "-",    // nback_character (current character)
+                                "-",    // nback_response (subject's response)
+                                "-",    // nback_true_or_false (T/F)
+                                "-",    // music_state (START/STOP/ERROR)
+                                "-",    // music_id (*.mp3)
+                                "-"     // music_pos (0.0-1.0)
+                                );
+        csv.stop();
         nback.stop();
     }
     seek.close();
@@ -131,9 +159,18 @@ void ofApp::seekFrameCallback(bool &val){
             pgmfilename << _seek_frame_number;
             pgmfilename << ".pgm";
             csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
-                                    "-",
-                                    pgmfilename.str(),
-                                    "-", nback.getLastCharacter(), "-", "-");
+                                    "-",    // system_state (START/STOP/ERROR)
+                                    "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                            // HCLHV/HCLLV/LCLHV/LCLLV)
+                                    pgmfilename.str(),    // frame_file_name  (*.pgm)
+                                    "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                    nback.getLastCharacter(),    // nback_character (current character)
+                                    "-",    // nback_response (subject's response)
+                                    "-",    // nback_true_or_false (T/F)
+                                    "-",    // music_state (START/STOP/ERROR)
+                                    "-",    // music_id (*.mp3)
+                                    "-"     // music_pos (0.0-1.0)
+                                    );
             _seek_frame_number++;
         }
     }
@@ -146,7 +183,18 @@ void ofApp::nbackNewCharCallback(std::string &val){
 #endif
     if(_is_recording){
         csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
-                                "-", "-", "NEW", val, "-", "-");
+                                "-",    // system_state (START/STOP/ERROR)
+                                "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                        // HCLHV/HCLLV/LCLHV/LCLLV)
+                                "-",    // frame_file_name  (*.pgm)
+                                "NEW",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                val,    // nback_character (current character)
+                                "-",    // nback_response (subject's response)
+                                "-",    // nback_true_or_false (T/F)
+                                "-",    // music_state (START/STOP/ERROR)
+                                "-",    // music_id (*.mp3)
+                                "-"     // music_pos (0.0-1.0)
+                                );
     }
 }
 
@@ -157,7 +205,18 @@ void ofApp::nbackCharHiddenCallback(bool &val){
 #endif
     if(_is_recording){
         csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
-                                "-", "-", "HIDDEN", nback.getLastCharacter(), "-", "-");
+                                "-",    // system_state (START/STOP/ERROR)
+                                "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                        // HCLHV/HCLLV/LCLHV/LCLLV)
+                                "-",    // frame_file_name  (*.pgm)
+                                "HIDDEN",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                nback.getLastCharacter(),    // nback_character (current character)
+                                "-",    // nback_response (subject's response)
+                                "-",    // nback_true_or_false (T/F)
+                                "-",    // music_state (START/STOP/ERROR)
+                                "-",    // music_id (*.mp3)
+                                "-"     // music_pos (0.0-1.0)
+                                );
     }
 }
 
@@ -190,6 +249,7 @@ void ofApp::setupGui(){
 }
 
 void ofApp::drawGui(ofEventArgs &args){
+//    _img.draw(50, 50);
     gui.draw();
 }
 
@@ -207,13 +267,35 @@ void ofApp::nbackCallback(bool & val){
         nback.start();
         if(_is_recording){
             csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
-                                    "-", "-", "START", nback.getLastCharacter(), "-", "-");
+                                    "-",    // system_state (START/STOP/ERROR)
+                                    "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                            // HCLHV/HCLLV/LCLHV/LCLLV)
+                                    "-",    // frame_file_name  (*.pgm)
+                                    "START",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                    nback.getLastCharacter(),    // nback_character (current character)
+                                    "-",    // nback_response (subject's response)
+                                    "-",    // nback_true_or_false (T/F)
+                                    "-",    // music_state (START/STOP/ERROR)
+                                    "-",    // music_id (*.mp3)
+                                    "-"     // music_pos (0.0-1.0)
+                                    );
         }
     }else{
         nback.stop();
         if(_is_recording){
             csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
-                                    "-", "-", "STOP", nback.getLastCharacter(), "-", "-");
+                                    "-",    // system_state (START/STOP/ERROR)
+                                    "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                            // HCLHV/HCLLV/LCLHV/LCLLV)
+                                    "-",    // frame_file_name  (*.pgm)
+                                    "STOP",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                    nback.getLastCharacter(),    // nback_character (current character)
+                                    "-",    // nback_response (subject's response)
+                                    "-",    // nback_true_or_false (T/F)
+                                    "-",    // music_state (START/STOP/ERROR)
+                                    "-",    // music_id (*.mp3)
+                                    "-"     // music_pos (0.0-1.0)
+                                    );
         }
     }
 }
@@ -237,12 +319,34 @@ void ofApp::recordingCallback(bool & val){
         }
         csv.start(_csv_header, _recording_path+"/log.csv");
         csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
-                                "START", "-", "-", nback.getLastCharacter(), "-", "-");
+                                "START",    // system_state (START/STOP/ERROR)
+                                "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                        // HCLHV/HCLLV/LCLHV/LCLLV)
+                                "-",    // frame_file_name  (*.pgm)
+                                "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                nback.getLastCharacter(),    // nback_character (current character)
+                                "-",    // nback_response (subject's response)
+                                "-",    // nback_true_or_false (T/F)
+                                "-",    // music_state (START/STOP/ERROR)
+                                "-",    // music_id (*.mp3)
+                                "-"     // music_pos (0.0-1.0)
+                                );
         _seek_frame_number = 0;
         _is_recording = true;
     }else{      // STOP
         csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
-                                "STOP", "-", "-", "-", "-", "-");
+                                "STOP",    // system_state (START/STOP/ERROR)
+                                "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                        // HCLHV/HCLLV/LCLHV/LCLLV)
+                                "-",    // frame_file_name  (*.pgm)
+                                "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                "-",    // nback_character (current character)
+                                "-",    // nback_response (subject's response)
+                                "-",    // nback_true_or_false (T/F)
+                                "-",    // music_state (START/STOP/ERROR)
+                                "-",    // music_id (*.mp3)
+                                "-"     // music_pos (0.0-1.0)
+                                );
         csv.stop();
         _is_recording = false;
     }
