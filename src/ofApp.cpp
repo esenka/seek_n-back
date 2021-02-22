@@ -2,20 +2,24 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+	// set frame rate at 60fps constant
     ofSetVerticalSync(true);
     ofSetFrameRate(60);
     
+	// seek camera setup
     seek.setup(OFX_SEEK_THERMAL_CAM_COMPACT);
     seek.setCVColorMap(cv::COLORMAP_BONE);
     seek.setVerbose(false);
     _img.allocate(THERMAL_WIDTH, THERMAL_HEIGHT, OF_IMAGE_COLOR);
     ofAddListener(seek.new_frame_evt, this, &ofApp::seekFrameCallback);
     
+	// nback test setup
     nback.setup(3, 500, 2000, 0.2, ESEN_FONT_PATH);
     ofAddListener(nback.new_char_evt, this, &ofApp::nbackNewCharCallback);
     ofAddListener(nback.char_hidden_evt, this, &ofApp::nbackCharHiddenCallback);
     
-    std::map<std::string, std::string>::iterator itr;
+	// csv export setup
+    std::map<std::string, std::string>::iterator itr = _csv_header_and_value.begin();
     while(itr!=_csv_header_and_value.end()){
         _csv_header.push_back(itr->first);
         itr++;
@@ -100,16 +104,6 @@ void ofApp::mouseReleased(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
 

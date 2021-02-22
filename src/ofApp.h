@@ -5,14 +5,13 @@
 #include "opencv2/opencv.hpp"
 #include "ofxNbackTest.hpp"
 #include "RHUtils.h"
-
 #include "ofxGui.h"
 
-// STUDY CONDITION SETUP
+// font paths
 #define ESEN_FONT_PATH "gt-pressura-regular.ttf"
 #define RYO_FONT_PATH "/System/Library/Fonts/SFNS.ttf"
 
-// paths to the mp3s
+// paths to the mp3 files
 // if it's in somewhere outside the project folder,
 // you can specify the paths in absolute path format
 // i.e. replacing "stimuli/HCLHV" to "/Users/esen/Documents/stimuli/HCLHV"
@@ -26,10 +25,10 @@
 #define STUDY_CALIB_TIME 60000      // 1 minute in MS
 #define STUDY_INTVL_TIME 300000     // 5 minutes in MS
 
-#define TRACKS_COUNT_FOR_EACH_SESSION 1
+#define TRACKS_FOR_EACH_SESSION 1
 
 // SYSTEM SETUP
-#define VERBOSE_MODE 1
+#define VERBOSE_MODE 1	// comment this line out to suppress verbose output
 
 static std::map<std::string, std::string> _csv_header_and_value = {
     {"system_timestamp_millis", ""},
@@ -74,8 +73,6 @@ class ofApp : public ofBaseApp{
 		void mousePressed(int x, int y, int button);
 		void mouseReleased(int x, int y, int button);
 		void windowResized(int w, int h);
-		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
   
         // STUDY INPUT
         void seekFrameCallback(bool & val);
