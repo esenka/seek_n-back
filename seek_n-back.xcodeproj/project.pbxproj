@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		120B1161A21CAF602894E4F9 /* SeekCam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E64B8E76D01816D5DE4662E9 /* SeekCam.cpp */; };
+		1297CD72343D114236D5851F /* RHInteractivePrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5394D354133B6A6801FB07B7 /* RHInteractivePrimitives.cpp */; };
 		169D3C72FDE6C5590A1616F5 /* ofxCvFloatImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7B6A03390302D5A2C9F0E4AB /* ofxCvFloatImage.cpp */; };
 		1BB666B672E5C5C4BC4317AF /* RHInteractiveObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7EB3AE0611E5A23FE86D1043 /* RHInteractiveObject.cpp */; };
 		1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 907C5B5E104864A2D3A25745 /* ofxToggle.cpp */; };
@@ -96,6 +97,7 @@
 		12BD1B8E1005DD90493C6437 /* core.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = core.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gapi/core.hpp; sourceTree = SOURCE_ROOT; };
 		12D375F2DDD285C3F9BFA4BA /* dynamic_smem.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = dynamic_smem.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/cuda/dynamic_smem.hpp; sourceTree = SOURCE_ROOT; };
 		1335F3F49E8A72CB04FA873D /* util_inl.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = util_inl.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/stitching/detail/util_inl.hpp; sourceTree = SOURCE_ROOT; };
+		13C5E2D3237C04F6928A3BD6 /* RHInteractivePrimitives.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = RHInteractivePrimitives.h; path = ../../../addons/ofxRHUtilities/src/RHInteractivePrimitives.h; sourceTree = SOURCE_ROOT; };
 		145F74B60184327D42B88E17 /* constants_c.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = constants_c.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/video/legacy/constants_c.h; sourceTree = SOURCE_ROOT; };
 		14F2EEAB21B663AAE2B68E57 /* calib3d.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = calib3d.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv4/opencv2/calib3d/calib3d.hpp; sourceTree = SOURCE_ROOT; };
 		15F2C6477A769C03A56D1401 /* ofxSlider.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ofxSlider.cpp; path = ../../../addons/ofxGui/src/ofxSlider.cpp; sourceTree = SOURCE_ROOT; };
@@ -200,6 +202,7 @@
 		516717F84C0146512C47A3EC /* ofxCvHaarFinder.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxCvHaarFinder.h; path = ../../../addons/ofxOpenCv/src/ofxCvHaarFinder.h; sourceTree = SOURCE_ROOT; };
 		52AFA1F08C420992CAAAE648 /* ofxSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxSlider.h; path = ../../../addons/ofxGui/src/ofxSlider.h; sourceTree = SOURCE_ROOT; };
 		536549D29F8EAE33060DE8FA /* version.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = version.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv4/opencv2/dnn/version.hpp; sourceTree = SOURCE_ROOT; };
+		5394D354133B6A6801FB07B7 /* RHInteractivePrimitives.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = RHInteractivePrimitives.cpp; path = ../../../addons/ofxRHUtilities/src/RHInteractivePrimitives.cpp; sourceTree = SOURCE_ROOT; };
 		549B3EA7657E206618A5FD94 /* color_detail.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = color_detail.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/cuda/detail/color_detail.hpp; sourceTree = SOURCE_ROOT; };
 		54C6BE377AE084FA7411103C /* reduce.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = reduce.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/cuda/detail/reduce.hpp; sourceTree = SOURCE_ROOT; };
 		54C6DB72BB20EF90C21BAA56 /* ofxNbackTest.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxNbackTest.hpp; path = ../../../addons/ofxNbackTest/src/ofxNbackTest.hpp; sourceTree = SOURCE_ROOT; };
@@ -470,6 +473,7 @@
 		D2DDDC14E1F4C6A97C67B563 /* gcgraph.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = gcgraph.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv4/opencv2/imgproc/detail/gcgraph.hpp; sourceTree = SOURCE_ROOT; };
 		D3D3B466769BD4AF4D3A16D8 /* opencl_clamdblas.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = opencl_clamdblas.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv4/opencv2/core/opencl/runtime/opencl_clamdblas.hpp; sourceTree = SOURCE_ROOT; };
 		D3E0835112C757E592B49EF1 /* ggpukernel.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ggpukernel.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gapi/gpu/ggpukernel.hpp; sourceTree = SOURCE_ROOT; };
+		D40C09E1E4A190CD1C5699D5 /* RHInteractiveBase.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = RHInteractiveBase.h; path = ../../../addons/ofxRHUtilities/src/RHInteractiveBase.h; sourceTree = SOURCE_ROOT; };
 		D43C38658CE359EE99F6E9FD /* filters.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = filters.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/cuda/filters.hpp; sourceTree = SOURCE_ROOT; };
 		D47C17C8DFC7389F138F64E2 /* sse_utils.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = sse_utils.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/sse_utils.hpp; sourceTree = SOURCE_ROOT; };
 		D4B2176AE075197B5F9D4812 /* imgproc.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = imgproc.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv4/opencv2/imgproc/imgproc.hpp; sourceTree = SOURCE_ROOT; };
@@ -1255,8 +1259,11 @@
 			children = (
 				B3AF29731E027A5C55618C70 /* RHCamera.h */,
 				752F91A7C14D4E451B1D3957 /* RHColors.h */,
+				D40C09E1E4A190CD1C5699D5 /* RHInteractiveBase.h */,
 				7EB3AE0611E5A23FE86D1043 /* RHInteractiveObject.cpp */,
 				390ACEAE3EF44117801DC439 /* RHInteractiveObject.h */,
+				5394D354133B6A6801FB07B7 /* RHInteractivePrimitives.cpp */,
+				13C5E2D3237C04F6928A3BD6 /* RHInteractivePrimitives.h */,
 				38F434F71F2373514FEF6496 /* RHKineticFont.cpp */,
 				8EEBE50450A50FF594C8AB50 /* RHKineticFont.h */,
 				DBB0DE4F051F24E5E448B110 /* RHUtils.h */,
@@ -2184,7 +2191,7 @@
 				BB4B014C10F69532006C3DED /* addons */,
 				6948EE371B920CB800B5AC1A /* local_addons */,
 				E4B69B5B0A3A1756003C02F2 /* seek_n-backDebug.app */,
-				E9EEB54D25E3BA0A001EB3E3 /* Recovered References */,
+				E9F8B0E525EF29FE001EE9FA /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2207,7 +2214,7 @@
 			name = features2d;
 			sourceTree = "<group>";
 		};
-		E9EEB54D25E3BA0A001EB3E3 /* Recovered References */ = {
+		E9F8B0E525EF29FE001EE9FA /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
 				CBB22376F22C63A53C8B3DA5 /* src */,
@@ -2377,7 +2384,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"$GCC_PREPROCESSOR_DEFINITIONS\";\nAPPSTORE=`expr \"$GCC_PREPROCESSOR_DEFINITIONS\" : \".*APPSTORE=\\([0-9]*\\)\"`\nif [ -z \"$APPSTORE\" ] ; then\necho \"Note: Not copying bin/data to App Package or doing App Code signing. Use AppStore target for AppStore distribution\";\nelse\n# Copy bin/data into App/Resources\nrsync -avz --exclude='.DS_Store' \"${SRCROOT}/bin/data/\" \"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/data/\"\n\n# ---- Code Sign App Package ----\n\n# WARNING: You may have to run Clean in Xcode after changing CODE_SIGN_IDENTITY!\n\n# Verify that $CODE_SIGN_IDENTITY is set\nif [ -z \"${CODE_SIGN_IDENTITY}\" ] ; then\necho \"CODE_SIGN_IDENTITY needs to be set for framework code-signing\"\nexit 0\nfi\n\nif [ -z \"${CODE_SIGN_ENTITLEMENTS}\" ] ; then\necho \"CODE_SIGN_ENTITLEMENTS needs to be set for framework code-signing!\"\n\nif [ \"${CONFIGURATION}\" = \"Release\" ] ; then\nexit 1\nelse\n# Code-signing is optional for non-release builds.\nexit 0\nfi\nfi\n\nITEMS=\"\"\n\nFRAMEWORKS_DIR=\"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\necho \"$FRAMEWORKS_DIR\"\nif [ -d \"$FRAMEWORKS_DIR\" ] ; then\nFRAMEWORKS=$(find \"${FRAMEWORKS_DIR}\" -depth -type d -name \"*.framework\" -or -name \"*.dylib\" -or -name \"*.bundle\" | sed -e \"s/\\(.*framework\\)/\\1\\/Versions\\/A\\//\")\nRESULT=$?\nif [[ $RESULT != 0 ]] ; then\nexit 1\nfi\n\nITEMS=\"${FRAMEWORKS}\"\nfi\n\nLOGINITEMS_DIR=\"${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/Library/LoginItems/\"\nif [ -d \"$LOGINITEMS_DIR\" ] ; then\nLOGINITEMS=$(find \"${LOGINITEMS_DIR}\" -depth -type d -name \"*.app\")\nRESULT=$?\nif [[ $RESULT != 0 ]] ; then\nexit 1\nfi\n\nITEMS=\"${ITEMS}\"$'\\n'\"${LOGINITEMS}\"\nfi\n\n# Prefer the expanded name, if available.\nCODE_SIGN_IDENTITY_FOR_ITEMS=\"${EXPANDED_CODE_SIGN_IDENTITY_NAME}\"\nif [ \"${CODE_SIGN_IDENTITY_FOR_ITEMS}\" = \"\" ] ; then\n# Fall back to old behavior.\nCODE_SIGN_IDENTITY_FOR_ITEMS=\"${CODE_SIGN_IDENTITY}\"\nfi\n\necho \"Identity:\"\necho \"${CODE_SIGN_IDENTITY_FOR_ITEMS}\"\n\necho \"Entitlements:\"\necho \"${CODE_SIGN_ENTITLEMENTS}\"\n\necho \"Found:\"\necho \"${ITEMS}\"\n\n# Change the Internal Field Separator (IFS) so that spaces in paths will not cause problems below.\nSAVED_IFS=$IFS\nIFS=$(echo -en \"\\n\\b\")\n\n# Loop through all items.\nfor ITEM in $ITEMS;\ndo\necho \"Stripping invalid archs '${ITEM}'\"\nlipo -extract x86_64 \"${ITEM}\" -o \"${ITEM}\"\necho \"Signing '${ITEM}'\"\ncodesign --force --verbose --sign \"${CODE_SIGN_IDENTITY_FOR_ITEMS}\" --entitlements \"${CODE_SIGN_ENTITLEMENTS}\" \"${ITEM}\"\nRESULT=$?\nif [[ $RESULT != 0 ]] ; then\necho \"Failed to sign '${ITEM}'.\"\nIFS=$SAVED_IFS\nexit 1\nfi\ndone\n\n# Restore $IFS.\nIFS=$SAVED_IFS\n\nfi\n";
+			shellScript = "echo \"$GCC_PREPROCESSOR_DEFINITIONS\";\nAPPSTORE=`expr \"$GCC_PREPROCESSOR_DEFINITIONS\" : \".*APPSTORE=\\([0-9]*\\)\"`\nif [ -z \"$APPSTORE\" ] ; then\necho \"Note: Not copying bin/data to App Package or doing App Code signing. Use AppStore target for AppStore distribution\";\nelse\n# Copy bin/data into App/Resources\nrsync -avz --exclude='.DS_Store' \"${SRCROOT}/bin/data/\" \"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/data/\"\n\n# Strip 32bit from fmod dylib\nlipo -remove i386 \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app/Contents/Frameworks/libfmodex.dylib\" -o \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app/Contents/Frameworks/libfmodex.dylib\" \n\n# ---- Code Sign App Package ----\n\n# WARNING: You may have to run Clean in Xcode after changing CODE_SIGN_IDENTITY!\n\n# Verify that $CODE_SIGN_IDENTITY is set\nif [ -z \"${CODE_SIGN_IDENTITY}\" ] ; then\necho \"CODE_SIGN_IDENTITY needs to be set for framework code-signing\"\nexit 0\nfi\n\nif [ -z \"${CODE_SIGN_ENTITLEMENTS}\" ] ; then\necho \"CODE_SIGN_ENTITLEMENTS needs to be set for framework code-signing!\"\n\nif [ \"${CONFIGURATION}\" = \"Release\" ] ; then\nexit 1\nelse\n# Code-signing is optional for non-release builds.\nexit 0\nfi\nfi\n\nITEMS=\"\"\n\nFRAMEWORKS_DIR=\"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\necho \"$FRAMEWORKS_DIR\"\nif [ -d \"$FRAMEWORKS_DIR\" ] ; then\nFRAMEWORKS=$(find \"${FRAMEWORKS_DIR}\" -depth -type d -name \"*.framework\" -or -name \"*.dylib\" -or -name \"*.bundle\" | sed -e \"s/\\(.*framework\\)/\\1\\/Versions\\/A\\//\")\nRESULT=$?\nif [[ $RESULT != 0 ]] ; then\nexit 1\nfi\n\nITEMS=\"${FRAMEWORKS}\"\nfi\n\nLOGINITEMS_DIR=\"${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/Library/LoginItems/\"\nif [ -d \"$LOGINITEMS_DIR\" ] ; then\nLOGINITEMS=$(find \"${LOGINITEMS_DIR}\" -depth -type d -name \"*.app\")\nRESULT=$?\nif [[ $RESULT != 0 ]] ; then\nexit 1\nfi\n\nITEMS=\"${ITEMS}\"$'\\n'\"${LOGINITEMS}\"\nfi\n\n# Prefer the expanded name, if available.\nCODE_SIGN_IDENTITY_FOR_ITEMS=\"${EXPANDED_CODE_SIGN_IDENTITY_NAME}\"\nif [ \"${CODE_SIGN_IDENTITY_FOR_ITEMS}\" = \"\" ] ; then\n# Fall back to old behavior.\nCODE_SIGN_IDENTITY_FOR_ITEMS=\"${CODE_SIGN_IDENTITY}\"\nfi\n\necho \"Identity:\"\necho \"${CODE_SIGN_IDENTITY_FOR_ITEMS}\"\n\necho \"Entitlements:\"\necho \"${CODE_SIGN_ENTITLEMENTS}\"\n\necho \"Found:\"\necho \"${ITEMS}\"\n\n# Change the Internal Field Separator (IFS) so that spaces in paths will not cause problems below.\nSAVED_IFS=$IFS\nIFS=$(echo -en \"\\n\\b\")\n\n# Loop through all items.\nfor ITEM in $ITEMS;\ndo\necho \"Stripping invalid archs '${ITEM}'\"\nlipo -remove i386 \"${ITEM}\" -o \"${ITEM}\"\necho \"Signing '${ITEM}'\"\ncodesign --force --verbose --sign \"${CODE_SIGN_IDENTITY_FOR_ITEMS}\" --entitlements \"${CODE_SIGN_ENTITLEMENTS}\" \"${ITEM}\"\nRESULT=$?\nif [[ $RESULT != 0 ]] ; then\necho \"Failed to sign '${ITEM}'.\"\nIFS=$SAVED_IFS\nexit 1\nfi\ndone\n\n# Restore $IFS.\nIFS=$SAVED_IFS\n\nfi\n";
 		};
 		E42962A92163ECCD00A6A9E2 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2390,7 +2397,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "xcodebuild -project \"$OF_PATH/libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj\" -target openFrameworks -configuration \"${CONFIGURATION}\"";
+			shellScript = "xcodebuild -project \"$OF_PATH/libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj\" -target openFrameworks -configuration \"${CONFIGURATION}\"\n";
 		};
 		E4B6FFFD0C3F9AB9008CF71C /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2403,7 +2410,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Resources/\"\n# Copy default icon file into App/Resources\nrsync -aved \"$ICON_FILE\" \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Resources/\"\n# Copy libfmod and change install directory for fmod to run\nrsync -aved \"$OF_PATH/libs/fmod/lib/osx/libfmod.dylib\" \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/\";\n# Not needed as we now call install_name_tool -id @loader_path/../Frameworks/libfmod.dylib libfmod.dylib on the dylib directly which prevents the need for calling every post build - keeping here for reference and possible legacy usage \n# install_name_tool -change @rpath/libfmod.dylib @executable_path/../Frameworks/libfmod.dylib \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME\";\n\necho \"$GCC_PREPROCESSOR_DEFINITIONS\";\n";
+			shellScript = "mkdir -p \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Resources/\"\n# Copy default icon file into App/Resources\nrsync -aved \"$ICON_FILE\" \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Resources/\"\n# Copy libfmod and change install directory for fmod to run\nrsync -aved \"$OF_PATH/libs/fmodex/lib/osx/libfmodex.dylib\" \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/\";\ninstall_name_tool -change @rpath/libfmod.dylib @executable_path/../Frameworks/libfmodex.dylib \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME\";\n\necho \"$GCC_PREPROCESSOR_DEFINITIONS\";\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2434,6 +2441,7 @@
 				D3301F6A0B43BB293ED97C1D /* ofxCvShortImage.cpp in Sources */,
 				44A2D45D62580F5507396408 /* src in Sources */,
 				1BB666B672E5C5C4BC4317AF /* RHInteractiveObject.cpp in Sources */,
+				1297CD72343D114236D5851F /* RHInteractivePrimitives.cpp in Sources */,
 				FD9CEE4D28BAA266CD295351 /* RHKineticFont.cpp in Sources */,
 				120B1161A21CAF602894E4F9 /* SeekCam.cpp in Sources */,
 				37998FB66A72B25A5890F114 /* SeekDevice.cpp in Sources */,
@@ -2546,13 +2554,33 @@
 					../../../addons/ofxOpenCv/libs/opencv/include/opencv4/opencv2/video,
 					../../../addons/ofxOpenCv/libs/opencv/include/opencv4/opencv2/video/legacy,
 					../../../addons/ofxOpenCv/libs/opencv/lib,
+					../../../addons/ofxOpenCv/libs/opencv/lib/emscripten,
 					../../../addons/ofxOpenCv/libs/opencv/lib/osx,
 					../../../addons/ofxOpenCv/libs/opencv/license,
 					../../../addons/ofxOpenCv/src,
+					../../../addons/ofxRHUtilities/libs,
 					../../../addons/ofxRHUtilities/src,
 					../../../addons/ofxRHUtilities/src,
 					../../../addons/ofxSeekThermal/libs,
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdC",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdC/tmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdCXX",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdCXX/tmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/CMakeTmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_create_flat_field.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_test.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_test_pro.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_viewer.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles/seek.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles/seek_static.dir",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/cmake",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/doc",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/examples",
@@ -2572,7 +2600,10 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
-				OTHER_CPLUSPLUSFLAGS = "-D__MACOSX_CORE__";
+				OTHER_CPLUSPLUSFLAGS = (
+					"-D__MACOSX_CORE__",
+					"-mtune=native",
+				);
 				SDKROOT = macosx;
 			};
 			name = AppStore;
@@ -2661,13 +2692,33 @@
 					../../../addons/ofxOpenCv/libs/opencv/include/opencv4/opencv2/video,
 					../../../addons/ofxOpenCv/libs/opencv/include/opencv4/opencv2/video/legacy,
 					../../../addons/ofxOpenCv/libs/opencv/lib,
+					../../../addons/ofxOpenCv/libs/opencv/lib/emscripten,
 					../../../addons/ofxOpenCv/libs/opencv/lib/osx,
 					../../../addons/ofxOpenCv/libs/opencv/license,
 					../../../addons/ofxOpenCv/src,
+					../../../addons/ofxRHUtilities/libs,
 					../../../addons/ofxRHUtilities/src,
 					../../../addons/ofxRHUtilities/src,
 					../../../addons/ofxSeekThermal/libs,
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdC",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdC/tmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdCXX",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdCXX/tmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/CMakeTmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_create_flat_field.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_test.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_test_pro.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_viewer.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles/seek.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles/seek_static.dir",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/cmake",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/doc",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/examples",
@@ -2695,26 +2746,7 @@
 					"$(OF_CORE_LIBS)",
 					"$(OF_CORE_FRAMEWORKS)",
 					"$(LIB_OF)",
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_photo.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibtiff.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibpng.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_calib3d.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libquirc.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_features2d.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_dnn.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_core.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_imgcodecs.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_highgui.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_video.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_ml.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibprotobuf.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_objdetect.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libzlib.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_flann.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libittnotify.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libtegra_hal.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_imgproc.a,
-					"../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibjpeg-turbo.a",
+					../../../addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a,
 					"../../../addons/ofxSeekThermal/libs/libusb/lib/osx/usb-1.0.0.a",
 					"../../../addons/ofxSeekThermal/libs/libusb/lib/osx/usb-1.0.0.a",
 				);
@@ -2817,13 +2849,33 @@
 					../../../addons/ofxOpenCv/libs/opencv/include/opencv4/opencv2/video,
 					../../../addons/ofxOpenCv/libs/opencv/include/opencv4/opencv2/video/legacy,
 					../../../addons/ofxOpenCv/libs/opencv/lib,
+					../../../addons/ofxOpenCv/libs/opencv/lib/emscripten,
 					../../../addons/ofxOpenCv/libs/opencv/lib/osx,
 					../../../addons/ofxOpenCv/libs/opencv/license,
 					../../../addons/ofxOpenCv/src,
+					../../../addons/ofxRHUtilities/libs,
 					../../../addons/ofxRHUtilities/src,
 					../../../addons/ofxRHUtilities/src,
 					../../../addons/ofxSeekThermal/libs,
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdC",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdC/tmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdCXX",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdCXX/tmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/CMakeTmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_create_flat_field.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_test.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_test_pro.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_viewer.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles/seek.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles/seek_static.dir",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/cmake",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/doc",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/examples",
@@ -2844,7 +2896,10 @@
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
-				OTHER_CPLUSPLUSFLAGS = "-D__MACOSX_CORE__";
+				OTHER_CPLUSPLUSFLAGS = (
+					"-D__MACOSX_CORE__",
+					"-mtune=native",
+				);
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -2943,13 +2998,33 @@
 					../../../addons/ofxOpenCv/libs/opencv/include/opencv4/opencv2/video,
 					../../../addons/ofxOpenCv/libs/opencv/include/opencv4/opencv2/video/legacy,
 					../../../addons/ofxOpenCv/libs/opencv/lib,
+					../../../addons/ofxOpenCv/libs/opencv/lib/emscripten,
 					../../../addons/ofxOpenCv/libs/opencv/lib/osx,
 					../../../addons/ofxOpenCv/libs/opencv/license,
 					../../../addons/ofxOpenCv/src,
+					../../../addons/ofxRHUtilities/libs,
 					../../../addons/ofxRHUtilities/src,
 					../../../addons/ofxRHUtilities/src,
 					../../../addons/ofxSeekThermal/libs,
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdC",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdC/tmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdCXX",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdCXX/tmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/CMakeTmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_create_flat_field.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_test.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_test_pro.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_viewer.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles/seek.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles/seek_static.dir",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/cmake",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/doc",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/examples",
@@ -2969,7 +3044,10 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
-				OTHER_CPLUSPLUSFLAGS = "-D__MACOSX_CORE__";
+				OTHER_CPLUSPLUSFLAGS = (
+					"-D__MACOSX_CORE__",
+					"-mtune=native",
+				);
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -3058,13 +3136,33 @@
 					../../../addons/ofxOpenCv/libs/opencv/include/opencv4/opencv2/video,
 					../../../addons/ofxOpenCv/libs/opencv/include/opencv4/opencv2/video/legacy,
 					../../../addons/ofxOpenCv/libs/opencv/lib,
+					../../../addons/ofxOpenCv/libs/opencv/lib/emscripten,
 					../../../addons/ofxOpenCv/libs/opencv/lib/osx,
 					../../../addons/ofxOpenCv/libs/opencv/license,
 					../../../addons/ofxOpenCv/src,
+					../../../addons/ofxRHUtilities/libs,
 					../../../addons/ofxRHUtilities/src,
 					../../../addons/ofxRHUtilities/src,
 					../../../addons/ofxSeekThermal/libs,
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdC",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdC/tmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdCXX",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdCXX/tmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/CMakeTmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_create_flat_field.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_test.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_test_pro.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_viewer.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles/seek.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles/seek_static.dir",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/cmake",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/doc",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/examples",
@@ -3092,26 +3190,7 @@
 					"$(OF_CORE_LIBS)",
 					"$(OF_CORE_FRAMEWORKS)",
 					"$(LIB_OF_DEBUG)",
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_photo.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibtiff.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibpng.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_calib3d.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libquirc.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_features2d.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_dnn.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_core.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_imgcodecs.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_highgui.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_video.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_ml.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibprotobuf.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_objdetect.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libzlib.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_flann.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libittnotify.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libtegra_hal.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_imgproc.a,
-					"../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibjpeg-turbo.a",
+					../../../addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a,
 					"../../../addons/ofxSeekThermal/libs/libusb/lib/osx/usb-1.0.0.a",
 					"../../../addons/ofxSeekThermal/libs/libusb/lib/osx/usb-1.0.0.a",
 				);
@@ -3203,13 +3282,33 @@
 					../../../addons/ofxOpenCv/libs/opencv/include/opencv4/opencv2/video,
 					../../../addons/ofxOpenCv/libs/opencv/include/opencv4/opencv2/video/legacy,
 					../../../addons/ofxOpenCv/libs/opencv/lib,
+					../../../addons/ofxOpenCv/libs/opencv/lib/emscripten,
 					../../../addons/ofxOpenCv/libs/opencv/lib/osx,
 					../../../addons/ofxOpenCv/libs/opencv/license,
 					../../../addons/ofxOpenCv/src,
+					../../../addons/ofxRHUtilities/libs,
 					../../../addons/ofxRHUtilities/src,
 					../../../addons/ofxRHUtilities/src,
 					../../../addons/ofxSeekThermal/libs,
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdC",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdC/tmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdCXX",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/3.19.1/CompilerIdCXX/tmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/CMakeFiles/CMakeTmp",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_create_flat_field.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_test.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_test_pro.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/examples/CMakeFiles/seek_viewer.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles/seek.dir",
+					"../../../addons/ofxSeekThermal/libs/libseek-thermal/build/src/CMakeFiles/seek_static.dir",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/cmake",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/doc",
 					"../../../addons/ofxSeekThermal/libs/libseek-thermal/examples",
@@ -3237,26 +3336,7 @@
 					"$(OF_CORE_LIBS)",
 					"$(OF_CORE_FRAMEWORKS)",
 					"$(LIB_OF)",
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_photo.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibtiff.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibpng.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_calib3d.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libquirc.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_features2d.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_dnn.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_core.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_imgcodecs.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_highgui.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_video.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_ml.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibprotobuf.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_objdetect.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libzlib.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_flann.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libittnotify.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libtegra_hal.a,
-					../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_imgproc.a,
-					"../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibjpeg-turbo.a",
+					../../../addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a,
 					"../../../addons/ofxSeekThermal/libs/libusb/lib/osx/usb-1.0.0.a",
 					"../../../addons/ofxSeekThermal/libs/libusb/lib/osx/usb-1.0.0.a",
 				);

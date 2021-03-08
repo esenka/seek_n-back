@@ -13,6 +13,19 @@ void ofApp::setup(){
     _img.allocate(THERMAL_WIDTH, THERMAL_HEIGHT, OF_IMAGE_COLOR);
     ofAddListener(seek.new_frame_evt, this, &ofApp::seekFrameCallback);
     
+    // audio setup
+    // SOUND
+    sound_stream.printDeviceList();
+    ofSoundStreamSettings sound_settings;
+    sound_settings.setApi(ofSoundDevice::Api::OSX_CORE);
+    sound_settings.setOutListener(this);
+    sound_settings.sampleRate = SOUND_SAMPLING_RATE;
+    sound_settings.numOutputChannels = 2;
+    sound_settings.numInputChannels = 0;
+    sound_settings.bufferSize = SOUND_BUFFER_SIZE;
+    sound_stream.setup(sound_settings);
+    //sound_stream.stop();
+    
 	// nback test setup
     nback.setup(3, 500, 2000, 0.2, ESEN_FONT_PATH);
     ofAddListener(nback.new_char_evt, this, &ofApp::nbackNewCharCallback);
@@ -24,12 +37,16 @@ void ofApp::setup(){
         _csv_header.push_back(itr->first);
         itr++;
     }
+    
+    _study_scenario_count = 0;
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     if(seek.isInitialized()){
-        if(seek.isFrameNew()) _img.setFromPixels(seek.getVisualizePixels());
+        if(seek.isFrameNew()){
+            _img.setFromPixels(seek.getVisualizePixels());
+        }
     }
     if(nback.isTestRunning()){
         nback.update();
@@ -37,9 +54,13 @@ void ofApp::update(){
 }
 
 //--------------------------------------------------------------
+void ofApp::audioOut(ofSoundBuffer & buffer){
+    // nothing to do
+}
+
+//--------------------------------------------------------------
 void ofApp::draw(){
     nback.draw(512, 384, 400, 400);
-    _img.draw(50, 50);
 }
 
 //--------------------------------------------------------------
@@ -130,6 +151,9 @@ void ofApp::exit(){
         nback.stop();
     }
     seek.close();
+    sound_stream.close();
+    
+    _img.clear();
     
     ofRemoveListener(seek.new_frame_evt, this, &ofApp::seekFrameCallback);
     ofRemoveListener(nback.new_char_evt, this, &ofApp::nbackNewCharCallback);
@@ -226,33 +250,194 @@ std::string ofApp::nbackResultToString(int result){
     }
 }
 
+//--------------------------------------------------------------
+bool ofApp::lookupFilesInDir(std::string target_path,
+                             std::string extension,
+                             std::vector<std::string> &file_list){
+#ifdef VERBOSE_MODE
+    cout << __PRETTY_FUNCTION__ << endl;
+#endif
 
+    // make sure target vector is cleared
+    if(file_list.size()){
+        file_list.clear();
+    }
+    
+    ofDirectory dir(target_path);
+    dir.allowExt(extension);
+    dir.sort();
+    if(dir.getFiles().size()){
+        for(auto &f : dir.getFiles()){
+            file_list.push_back(f.getAbsolutePath());
+#ifdef VERBOSE_MODE
+            cout << "FOUND: " << f.getAbsolutePath() << endl;
+#endif
+        }
+        return true;
+    }else{
+        return false;
+    }
+}
+
+//--------------------------------------------------------------
+void ofApp::studyScenarioChangeCallback(){
+#ifdef VERBOSE_MODE
+    cout << __PRETTY_FUNCTION__ << endl;
+#endif
+
+    if(_whole_study_running){
+        _study_scenario_count >= 12 ? _study_scenario_count = 0
+                                    : _study_scenario_count++;
+    }
+    
+    switch(_study_scenario_count){
+        case 0:     // NONE
+            _study_scene_main_phrase = "";
+            _study_scene_sub_phrase = "";
+            break;
+        case 1:     // climate init (intro)
+            _study_scene_main_phrase = STUDY_INTRO_MESSAGE_MAIN;
+            _study_scene_sub_phrase = STUDY_INTRO_MESSAGE_SUB;
+            if(_whole_study_running){
+                _thread = std::thread([this](){
+                    std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_INTRO_TIME));
+                    this->studyScenarioChangeCallback();
+                });
+                threadMap[_thread_name] = _thread.native_handle();
+                _thread.detach();
+            }
+            break;
+        case 2:     // 1 minute calib
+            _study_scene_main_phrase = STUDY_CALIB_MESSAGE_MAIN;
+            _study_scene_sub_phrase = STUDY_CALIB_MESSAGE_SUB;
+            if(_whole_study_running){
+                _thread = std::thread([this](){
+                    std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_CALIB_TIME));
+                    this->studyScenarioChangeCallback();
+                });
+                threadMap[_thread_name] = _thread.native_handle();
+                _thread.detach();
+            }
+            break;
+        case 3:     // practice intro
+            _study_scene_main_phrase = STUDY_PRACTICE_MESSAGE_MAIN;
+            _study_scene_sub_phrase = STUDY_PRACTICE_MESSAGE_SUB;
+            if(_whole_study_running){
+                _thread = std::thread([this](){
+                    std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_CALIB_TIME));
+                    this->studyScenarioChangeCallback();
+                });
+                threadMap[_thread_name] = _thread.native_handle();
+                _thread.detach();
+            }
+            break;
+        case 4:     // practice session
+        case 7:     // LCLLV
+        case 9:     // LCLHV
+        case 11:    // HCLLV
+        case 13:    // HCLHV
+            _study_scene_main_phrase = STUDY_RUNNING_MESSAGE_MAIN;
+            _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB;
+            break;
+        case 5:     // 5 minutes pause
+        case 8:
+        case 10:
+        case 12:
+            _study_scene_main_phrase = STUDY_INTERVAL_MESSAGE_MAIN;
+            _study_scene_sub_phrase = STUDY_INTERVAL_MESSAGE_SUB;
+            if(_whole_study_running){
+                _thread = std::thread([this](){
+                    std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_INTVL_TIME));
+                    this->studyScenarioChangeCallback();
+                });
+                threadMap[_thread_name] = _thread.native_handle();
+                _thread.detach();
+            }
+            break;
+        case 6:     // main intro
+            _study_scene_main_phrase = STUDY_MAIN_MESSAGE_MAIN;
+            _study_scene_sub_phrase = STUDY_MAIN_MESSAGE_SUB;
+            if(_whole_study_running){
+                _thread = std::thread([this](){
+                    std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_CALIB_TIME));
+                    this->studyScenarioChangeCallback();
+                });
+                threadMap[_thread_name] = _thread.native_handle();
+                _thread.detach();
+            }
+            break;
+        case 14:    // end
+            _study_scene_main_phrase = STUDY_END_MESSAGE_MAIN;
+            _study_scene_sub_phrase = STUDY_END_MESSAGE_SUB;
+            if(_whole_study_running){
+                _thread = std::thread([this](){
+                    std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_CALIB_TIME));
+                    this->studyScenarioChangeCallback();
+                });
+                threadMap[_thread_name] = _thread.native_handle();
+                _thread.detach();
+            }
+            break;
+    }
+
+}
+
+//--------------------------------------------------------------
+void ofApp::cancelBackgroundThread(const std::string &tname){
+#ifdef VERBOSE_MODE
+    cout << __PRETTY_FUNCTION__ << endl;
+#endif
+    ofxRHUtilities::ThreadMap::const_iterator it = threadMap.find(tname);
+    if(it != threadMap.end()){
+        pthread_cancel(it->second);
+        threadMap.erase(tname);
+    }
+}
+
+//--------------------------------------------------------------
 void ofApp::setupGui(){
-    parameters.setName("parameters");
-    parameters.add(_nback_running.set("Nback Run/Stop", false));
-    parameters.add(_file_path.set("Recording Path", "seek_frame_samples"));
-    parameters.add(_file_prefix.set("File prefix", "frame_"));
-    parameters.add(_recording.set("Recording", false));
-    parameters.add(_kill_app.set("Quit App?", false));
+#ifdef VERBOSE_MODE
+    cout << __PRETTY_FUNCTION__ << endl;
+#endif
+    proto_parameters.setName("test_parameters");
+    proto_parameters.add(_nback_running.set("Nback Run/Stop", false));
+    proto_parameters.add(_recording.set("Recording", false));
+    proto_parameters.add(_kill_app.set("Quit App?", false));
+    
+    main_parameters.setName("main_parameters");
+    main_parameters.add(_participant_id.set("Participant ID", "name_"));
+    main_parameters.add(_file_path.set("Recording Path", "seek_frame_samples"));
+    main_parameters.add(_file_prefix.set("File prefix", "frame_"));
+    main_parameters.add(_whole_study_running.set("Whole study Run/Stop", false));
     
     _nback_running.addListener(this, &ofApp::nbackCallback);
     _recording.addListener(this, &ofApp::recordingCallback);
     _kill_app.addListener(this, &ofApp::killAppCallback);
+    _whole_study_running.addListener(this, &ofApp::wholeStudyRunningCallback);
     
-    gui.setup(parameters);
+    gui.setup();
+    gui.add(proto_parameters);
+    gui.add(main_parameters);
 }
 
+//--------------------------------------------------------------
 void ofApp::drawGui(ofEventArgs &args){
-//    _img.draw(50, 50);
+    _img.draw(0, 0, THERMAL_WIDTH * 2, THERMAL_HEIGHT * 2);
     gui.draw();
 }
 
+//--------------------------------------------------------------
 void ofApp::exitGui(ofEventArgs & args){
+#ifdef VERBOSE_MODE
+    cout << __PRETTY_FUNCTION__ << endl;
+#endif
     _nback_running.removeListener(this, &ofApp::nbackCallback);
     _recording.removeListener(this, &ofApp::recordingCallback);
     _kill_app.removeListener(this, &ofApp::killAppCallback);
+    _whole_study_running.removeListener(this, &ofApp::wholeStudyRunningCallback);
 }
 
+//--------------------------------------------------------------
 void ofApp::nbackCallback(bool & val){
 #ifdef VERBOSE_MODE
     cout << __PRETTY_FUNCTION__ << val << endl;
@@ -294,6 +479,7 @@ void ofApp::nbackCallback(bool & val){
     }
 }
 
+//--------------------------------------------------------------
 void ofApp::recordingCallback(bool & val){
 #ifdef VERBOSE_MODE
     cout << __PRETTY_FUNCTION__ << val << endl;
@@ -346,12 +532,27 @@ void ofApp::recordingCallback(bool & val){
     }
 }
 
+//--------------------------------------------------------------
 void ofApp::killAppCallback(bool & val){
 #ifdef VERBOSE_MODE
     cout << __PRETTY_FUNCTION__ << val << endl;
 #endif
     if(val){
         ofExit();
+    }
+}
+
+//--------------------------------------------------------------
+void ofApp::wholeStudyRunningCallback(bool & val){
+#ifdef VERBOSE_MODE
+    cout << __PRETTY_FUNCTION__ << val << endl;
+#endif
+    if(val){
+        this->studyScenarioChangeCallback();
+    }else{
+        this->cancelBackgroundThread(_thread_name);
+        _study_scenario_count = 0;
+        this->studyScenarioChangeCallback();
     }
 }
 

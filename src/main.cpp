@@ -10,11 +10,11 @@ int main( ){
 	settings.resizable = true;
 	shared_ptr<ofAppBaseWindow> mainWindow = ofCreateWindow(settings);
 
-    settings.setSize(600, 600);
+    settings.setSize(512, 512);
 	settings.setPosition(glm::vec2(0,0));
 	settings.resizable = true;
 	// uncomment next line to share main's OpenGL resources with gui
-	//settings.shareContextWith = mainWindow;
+	settings.shareContextWith = mainWindow;
 	shared_ptr<ofAppBaseWindow> guiWindow = ofCreateWindow(settings);
 	guiWindow->setVerticalSync(false);
 
