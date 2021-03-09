@@ -44,6 +44,7 @@ void ofApp::setup(){
 	sound_stream.setup(sound_settings);
 	//sound_stream.stop();
 	// look up sound files
+    this->lookupFilesInDir(PRACTICE_PATH, "mp3", _practice_sounds, true);
 	this->lookupFilesInDir(HCLHV_PATH, "mp3", _hclhv_sounds, true);
 	this->lookupFilesInDir(HCLLV_PATH, "mp3", _hcllv_sounds, true);
 	this->lookupFilesInDir(LCLHV_PATH, "mp3", _lclhv_sounds, true);
@@ -56,7 +57,9 @@ void ofApp::setup(){
 	_study_scene_sub_phrase = "";
 	_study_phrase_sub_to_main_ratio = 0.4f;
 	_study_scenario_count = 0;
-	_current_audio_count = 0;
+	_current_audio_kind = 0;
+    _current_audio_pos = 0;
+    _study_state = "";
 }
 
 //--------------------------------------------------------------
@@ -127,19 +130,19 @@ void ofApp::exit(){
 	// cleanup everything
 	
 	if(nback.isTestRunning()){
-		csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
-								"ERROR",    // system_state (START/STOP/ERROR)
-								"-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
-										// HCLHV/HCLLV/LCLHV/LCLLV)
-								"-",    // frame_file_name  (*.pgm)
-								"-",    // nback_state  (START/STOP/NEW/HIDDEN)
-								"-",    // nback_character (current character)
-								"-",    // nback_response (subject's response)
-								"-",    // nback_true_or_false (T/F)
-								"-",    // music_state (START/STOP/ERROR)
-								"-",    // music_id (*.mp3)
-								"-"     // music_pos (0.0-1.0)
-								);
+        csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                "ERROR",    // system_state (START/STOP/ERROR)
+                                "-",    // study_state (START/STOP/CALIB/INTRO/PRACTICE/
+                                        //              INTVL/HCLHV/HCLLV/LCLHV/LCLLV)
+                                "-",    // frame_file_name  (*.pgm)
+                                "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                "-",    // nback_character (current character)
+                                "-",    // nback_response (subject's response)
+                                "-",    // nback_true_or_false (T/F)
+                                "-",    // music_state (START/STOP/ERROR)
+                                "-",    // music_id (*.mp3)
+                                "-"     // music_pos (0.0-1.0)
+                                );
 		csv.stop();
 		nback.stop();
 	}
@@ -168,8 +171,8 @@ void ofApp::keyReleased(int key){
                 nback.submitResponse(true);
                 csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
                                         "-",    // system_state (START/STOP/ERROR)
-                                        "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
-                                                // HCLHV/HCLLV/LCLHV/LCLLV)
+                                        "-",    // study_state (START/STOP/CALIB/INTRO/PRACTICE/
+                                                //              INTVL/HCLHV/HCLLV/LCLHV/LCLLV)
                                         "-",    // frame_file_name  (*.pgm)
                                         "-",    // nback_state  (START/STOP/NEW/HIDDEN)
                                         nback.getLastCharacter(),    // nback_character (current character)
@@ -177,7 +180,8 @@ void ofApp::keyReleased(int key){
                                         this->nbackResultToString(nback.isLastResponseTrue()),    // nback_true_or_false (T/F)
                                         "-",    // music_state (START/STOP/ERROR)
                                         "-",    // music_id (*.mp3)
-                                        "-"     // music_pos (0.0-1.0)
+                                        (player.isPlaying() ? std::to_string(player.getPosition())
+                                                            : "-")     // music_pos (0.0-1.0)
                                         );
             }
             break;

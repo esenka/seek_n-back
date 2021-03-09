@@ -73,8 +73,8 @@ static std::map<std::string, std::string> _csv_header_and_value = {
 /*
 csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
                         "-",    // system_state (START/STOP/ERROR)
-                        "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
-                                // HCLHV/HCLLV/LCLHV/LCLLV)
+                        "-",    // study_state (START/STOP/CALIB/INTRO/PRACTICE/
+                                //              INTVL/HCLHV/HCLLV/LCLHV/LCLLV)
                         "-",    // frame_file_name  (*.pgm)
                         "-",    // nback_state  (START/STOP/NEW/HIDDEN)
                         "-",    // nback_character (current character)
@@ -158,7 +158,7 @@ class ofApp : public ofBaseApp{
 		 * 13 - HCLHV
 		 * 14 - end
 		 */
-		unsigned _current_audio_count;
+		unsigned _current_audio_kind;
 		/*
 		 * AUDIO_COUNT:
 		 * 0: HCLHV
@@ -166,6 +166,8 @@ class ofApp : public ofBaseApp{
 		 * 2: LCLHV
 		 * 3: LCLLV
 		 */
+        unsigned _current_audio_pos;
+        std::string _study_state;
         
         // AUDIO MANAGEMENT
         void audioOut(ofSoundBuffer & buffer);
