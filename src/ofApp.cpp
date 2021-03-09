@@ -8,42 +8,64 @@ void ofApp::setup(){
     
 	// seek camera setup
     seek.setup(OFX_SEEK_THERMAL_CAM_COMPACT);
+	// OpenCV false color list:
+	// https://docs.opencv.org/3.4/d3/d50/group__imgproc__colormap.html
     seek.setCVColorMap(cv::COLORMAP_BONE);
     seek.setVerbose(false);
     _img.allocate(THERMAL_WIDTH, THERMAL_HEIGHT, OF_IMAGE_COLOR);
-    ofAddListener(seek.new_frame_evt, this, &ofApp::seekFrameCallback);
-    
-    // audio setup
-    // SOUND
-    sound_stream.printDeviceList();
-    ofSoundStreamSettings sound_settings;
-    sound_settings.setApi(ofSoundDevice::Api::OSX_CORE);
-    sound_settings.setOutListener(this);
-    sound_settings.sampleRate = SOUND_SAMPLING_RATE;
-    sound_settings.numOutputChannels = 2;
-    sound_settings.numInputChannels = 0;
-    sound_settings.bufferSize = SOUND_BUFFER_SIZE;
-    sound_stream.setup(sound_settings);
-    //sound_stream.stop();
+    ofAddListener(seek.new_frame_evt, this, &ofApp::seekNewFrameCallback);
     
 	// nback test setup
-    nback.setup(3, 500, 2000, 0.2, ESEN_FONT_PATH);
+    nback.setup(NBACK_BACK_COUNT,
+				NBACK_CHAR_TIME_MS, NBACK_BLANK_TIME_MS, NBACK_RANDOMNESS_RATE,
+				RYO_FONT_PATH);
     ofAddListener(nback.new_char_evt, this, &ofApp::nbackNewCharCallback);
     ofAddListener(nback.char_hidden_evt, this, &ofApp::nbackCharHiddenCallback);
+	
+	// study log export setup
+	std::map<std::string, std::string>::iterator itr = _csv_header_and_value.begin();
+	while(itr!=_csv_header_and_value.end()){
+		_csv_header.push_back(itr->first);
+		itr++;
+	}
+	
+	// study display config
+	font.load(RYO_FONT_PATH, 64);
+	
+	// audio setup
+	sound_stream.printDeviceList();
+	ofSoundStreamSettings sound_settings;
+	sound_settings.setApi(ofSoundDevice::Api::OSX_CORE);
+	sound_settings.setOutListener(this);
+	sound_settings.sampleRate = SOUND_SAMPLING_RATE;
+	sound_settings.numOutputChannels = 2;
+	sound_settings.numInputChannels = 0;
+	sound_settings.bufferSize = SOUND_BUFFER_SIZE;
+	sound_stream.setup(sound_settings);
+	//sound_stream.stop();
+	// look up sound files
+	this->lookupFilesInDir(HCLHV_PATH, "mp3", _hclhv_sounds, true);
+	this->lookupFilesInDir(HCLLV_PATH, "mp3", _hcllv_sounds, true);
+	this->lookupFilesInDir(LCLHV_PATH, "mp3", _lclhv_sounds, true);
+	this->lookupFilesInDir(LCLLV_PATH, "mp3", _lcllv_sounds, true);
     
-	// csv export setup
-    std::map<std::string, std::string>::iterator itr = _csv_header_and_value.begin();
-    while(itr!=_csv_header_and_value.end()){
-        _csv_header.push_back(itr->first);
-        itr++;
-    }
-    
-    _study_scenario_count = 0;
+	// variables init
+	_recording_path = "";
+	_is_recording = false;
+	_study_scene_main_phrase = "";
+	_study_scene_sub_phrase = "";
+	_study_phrase_sub_to_main_ratio = 0.4f;
+	_study_scenario_count = 0;
+	_current_audio_count = 0;
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     if(seek.isInitialized()){
+		// if SeekThermal camera is tethered and a new frame is captured
+		// this will be updated at each frame update of ofApp
+		// and frame data recording will be processed in
+		// ofApp::seekNewFrameCallback
         if(seek.isFrameNew()){
             _img.setFromPixels(seek.getVisualizePixels());
         }
@@ -60,7 +82,76 @@ void ofApp::audioOut(ofSoundBuffer & buffer){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    nback.draw(512, 384, 400, 400);
+	// buffering these window info to variables so that
+	// oF won't cause any framerate decreasing issue
+	float w = ofGetWidth();
+	float h = ofGetHeight();
+	
+	if(_nback_visible){
+		nback.draw(w/2, h/2-h/4, w/2, w/2);
+	}
+	if(_whole_study_running){
+		switch(_study_scenario_count){
+			case 0:     // NONE
+				break;
+			case 1:     // climate init (intro)
+				break;
+			case 2:     // 1 minute calib
+				break;
+			case 3:     // practice intro
+				break;
+			case 4:     // practice session
+			case 7:     // LCLLV
+			case 9:     // LCLHV
+			case 11:    // HCLLV
+			case 13:    // HCLHV
+				break;
+			case 5:     // 5 minutes pause
+			case 8:
+			case 10:
+			case 12:
+				break;
+			case 6:     // main intro
+				break;
+			case 14:    // end
+				break;
+		}
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::exit(){
+#ifdef VERBOSE_MODE
+	cout << __PRETTY_FUNCTION__ << endl;
+#endif
+	// cleanup everything
+	
+	if(nback.isTestRunning()){
+		csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+								"ERROR",    // system_state (START/STOP/ERROR)
+								"-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+										// HCLHV/HCLLV/LCLHV/LCLLV)
+								"-",    // frame_file_name  (*.pgm)
+								"-",    // nback_state  (START/STOP/NEW/HIDDEN)
+								"-",    // nback_character (current character)
+								"-",    // nback_response (subject's response)
+								"-",    // nback_true_or_false (T/F)
+								"-",    // music_state (START/STOP/ERROR)
+								"-",    // music_id (*.mp3)
+								"-"     // music_pos (0.0-1.0)
+								);
+		csv.stop();
+		nback.stop();
+	}
+	seek.close();
+	sound_stream.close();
+	
+	_img.clear();
+	
+	// event listeners needs to be cleared
+	ofRemoveListener(seek.new_frame_evt, this, &ofApp::seekNewFrameCallback);
+	ofRemoveListener(nback.new_char_evt, this, &ofApp::nbackNewCharCallback);
+	ofRemoveListener(nback.char_hidden_evt, this, &ofApp::nbackCharHiddenCallback);
 }
 
 //--------------------------------------------------------------
@@ -70,6 +161,7 @@ void ofApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
+	// sync with GuiWindow::keyReleased
     switch(key){
         case OF_KEY_LEFT_SHIFT:     // TRUE
             if(!nback.isResponseSubmitted()){
@@ -129,48 +221,21 @@ void ofApp::windowResized(int w, int h){
 }
 
 //--------------------------------------------------------------
-void ofApp::exit(){
-#ifdef VERBOSE_MODE
-    cout << __PRETTY_FUNCTION__ << endl;
-#endif
-    if(nback.isTestRunning()){
-        csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
-                                "ERROR",    // system_state (START/STOP/ERROR)
-                                "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
-                                        // HCLHV/HCLLV/LCLHV/LCLLV)
-                                "-",    // frame_file_name  (*.pgm)
-                                "-",    // nback_state  (START/STOP/NEW/HIDDEN)
-                                "-",    // nback_character (current character)
-                                "-",    // nback_response (subject's response)
-                                "-",    // nback_true_or_false (T/F)
-                                "-",    // music_state (START/STOP/ERROR)
-                                "-",    // music_id (*.mp3)
-                                "-"     // music_pos (0.0-1.0)
-                                );
-        csv.stop();
-        nback.stop();
-    }
-    seek.close();
-    sound_stream.close();
-    
-    _img.clear();
-    
-    ofRemoveListener(seek.new_frame_evt, this, &ofApp::seekFrameCallback);
-    ofRemoveListener(nback.new_char_evt, this, &ofApp::nbackNewCharCallback);
-    ofRemoveListener(nback.char_hidden_evt, this, &ofApp::nbackCharHiddenCallback);
-}
-
-//--------------------------------------------------------------
-void ofApp::seekFrameCallback(bool &val){
+void ofApp::seekNewFrameCallback(bool &val){
 #ifdef VERBOSE_MODE
     cout << __PRETTY_FUNCTION__ << endl;
 #endif
     if(seek.isInitialized()){
         if(_is_recording){
+			// if data recording is enabled, each frame will be
+			// stored to the recording dir in .pgm format
+			// (16bit depth monochrome image)
             cv::Mat buf;
             seek.getRawCVFrame(buf);
             ofxSeekThermal::writepgm(buf, _recording_path + "/" + _file_prefix.get(),
                                      _seek_frame_number, "", false);
+			// following code is same one from the ofxSeekThermal::writepgm
+			// but do that again here to reproduce the file name
             std::ostringstream pgmfilename;
             pgmfilename << _file_prefix.get();
             pgmfilename << std::internal << std::setfill('0') << std::setw(6);
@@ -199,6 +264,7 @@ void ofApp::nbackNewCharCallback(std::string &val){
 #ifdef VERBOSE_MODE
     cout << __PRETTY_FUNCTION__ << endl;
 #endif
+	// when new character is updated to Nback task
     if(_is_recording){
         csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
                                 "-",    // system_state (START/STOP/ERROR)
@@ -221,6 +287,7 @@ void ofApp::nbackCharHiddenCallback(bool &val){
 #ifdef VERBOSE_MODE
     cout << __PRETTY_FUNCTION__ << endl;
 #endif
+	// when the current character in Nback task gets hidden
     if(_is_recording){
         csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
                                 "-",    // system_state (START/STOP/ERROR)
@@ -251,32 +318,65 @@ std::string ofApp::nbackResultToString(int result){
 }
 
 //--------------------------------------------------------------
-bool ofApp::lookupFilesInDir(std::string target_path,
-                             std::string extension,
-                             std::vector<std::string> &file_list){
+void ofApp::nbackRunCallback(bool & val){
 #ifdef VERBOSE_MODE
-    cout << __PRETTY_FUNCTION__ << endl;
+	cout << __PRETTY_FUNCTION__ << val << endl;
 #endif
+	// when Nback task started/stopped
+	if(val){
+		nback.start();
+		if(_is_recording){
+			csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+									"-",    // system_state (START/STOP/ERROR)
+									"-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+											// HCLHV/HCLLV/LCLHV/LCLLV)
+									"-",    // frame_file_name  (*.pgm)
+									"START",    // nback_state  (START/STOP/NEW/HIDDEN)
+									nback.getLastCharacter(),    // nback_character (current character)
+									"-",    // nback_response (subject's response)
+									"-",    // nback_true_or_false (T/F)
+									"-",    // music_state (START/STOP/ERROR)
+									"-",    // music_id (*.mp3)
+									"-"     // music_pos (0.0-1.0)
+									);
+		}
+	}else{
+		nback.stop();
+		if(_is_recording){
+			csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+									"-",    // system_state (START/STOP/ERROR)
+									"-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+											// HCLHV/HCLLV/LCLHV/LCLLV)
+									"-",    // frame_file_name  (*.pgm)
+									"STOP",    // nback_state  (START/STOP/NEW/HIDDEN)
+									nback.getLastCharacter(),    // nback_character (current character)
+									"-",    // nback_response (subject's response)
+									"-",    // nback_true_or_false (T/F)
+									"-",    // music_state (START/STOP/ERROR)
+									"-",    // music_id (*.mp3)
+									"-"     // music_pos (0.0-1.0)
+									);
+		}
+	}
+}
 
-    // make sure target vector is cleared
-    if(file_list.size()){
-        file_list.clear();
-    }
-    
-    ofDirectory dir(target_path);
-    dir.allowExt(extension);
-    dir.sort();
-    if(dir.getFiles().size()){
-        for(auto &f : dir.getFiles()){
-            file_list.push_back(f.getAbsolutePath());
+//--------------------------------------------------------------
+void ofApp::drawStringCenterWithRatio(std::string message,
+									  float center_x, float center_y, float rate){
 #ifdef VERBOSE_MODE
-            cout << "FOUND: " << f.getAbsolutePath() << endl;
+	cout << __PRETTY_FUNCTION__ << endl;
 #endif
-        }
-        return true;
-    }else{
-        return false;
-    }
+	// just a simple utility function to draw a message on a window
+	// with a specific scaling amount
+	ofRectangle r = font.getStringBoundingBox(message, 0, 0);
+	
+	ofPushMatrix();
+		ofTranslate(center_x-(r.width/2.0f*rate), center_y-(r.height/2.0f*rate));
+		if(rate<1.0f || rate>1.0f){
+			ofScale(rate);
+		}
+		font.drawString(message, 0.0, 0.0);
+	ofPopMatrix();
 }
 
 //--------------------------------------------------------------
@@ -284,7 +384,9 @@ void ofApp::studyScenarioChangeCallback(){
 #ifdef VERBOSE_MODE
     cout << __PRETTY_FUNCTION__ << endl;
 #endif
-
+	// study scenario control
+	// observe the value of _study_scenario_count to control what to
+	// display and what to change in the system
     if(_whole_study_running){
         _study_scenario_count >= 12 ? _study_scenario_count = 0
                                     : _study_scenario_count++;
@@ -387,6 +489,8 @@ void ofApp::cancelBackgroundThread(const std::string &tname){
 #ifdef VERBOSE_MODE
     cout << __PRETTY_FUNCTION__ << endl;
 #endif
+	// just a utility function to stop the worker thread
+	// in case if the study is suspended on the half way
     ofxRHUtilities::ThreadMap::const_iterator it = threadMap.find(tname);
     if(it != threadMap.end()){
         pthread_cancel(it->second);
@@ -395,33 +499,84 @@ void ofApp::cancelBackgroundThread(const std::string &tname){
 }
 
 //--------------------------------------------------------------
+void ofApp::startWholeStudy(){
+#ifdef VERBOSE_MODE
+	cout << __PRETTY_FUNCTION__ << endl;
+#endif
+	
+}
+
+//--------------------------------------------------------------
+void ofApp::stopWholeStudy(){
+#ifdef VERBOSE_MODE
+	cout << __PRETTY_FUNCTION__ << endl;
+#endif
+	
+}
+
+//--------------------------------------------------------------
+bool ofApp::lookupFilesInDir(std::string target_path,
+							 std::string extension,
+							 std::vector<std::string> &file_list,
+							 bool clear_list_buffer){
+#ifdef VERBOSE_MODE
+	cout << __PRETTY_FUNCTION__ << endl;
+#endif
+	// lookup files with a specified extension in a certain directory
+	// make sure target vector is cleared
+	if(clear_list_buffer){
+		if(file_list.size()){
+			file_list.clear();
+		}
+	}
+	
+	ofDirectory dir(target_path);
+	dir.allowExt(extension);
+	dir.sort();
+	if(dir.getFiles().size()){
+		for(auto &f : dir.getFiles()){
+			file_list.push_back(f.getAbsolutePath());
+#ifdef VERBOSE_MODE
+			cout << "FOUND: " << f.getAbsolutePath() << endl;
+#endif
+		}
+		return true;
+	}else{
+		return false;
+	}
+}
+
+//--------------------------------------------------------------
 void ofApp::setupGui(){
 #ifdef VERBOSE_MODE
     cout << __PRETTY_FUNCTION__ << endl;
 #endif
     proto_parameters.setName("test_parameters");
+	proto_parameters.add(_nback_visible.set("Nback visible 4 debug", false));
     proto_parameters.add(_nback_running.set("Nback Run/Stop", false));
     proto_parameters.add(_recording.set("Recording", false));
-    proto_parameters.add(_kill_app.set("Quit App?", false));
     
     main_parameters.setName("main_parameters");
     main_parameters.add(_participant_id.set("Participant ID", "name_"));
     main_parameters.add(_file_path.set("Recording Path", "seek_frame_samples"));
     main_parameters.add(_file_prefix.set("File prefix", "frame_"));
     main_parameters.add(_whole_study_running.set("Whole study Run/Stop", false));
+	main_parameters.add(_kill_app.set("Quit App?", false));
     
-    _nback_running.addListener(this, &ofApp::nbackCallback);
+    _nback_running.addListener(this, &ofApp::nbackRunCallback);
     _recording.addListener(this, &ofApp::recordingCallback);
     _kill_app.addListener(this, &ofApp::killAppCallback);
-    _whole_study_running.addListener(this, &ofApp::wholeStudyRunningCallback);
+    _whole_study_running.addListener(this, &ofApp::wholeStudyRunCallback);
     
     gui.setup();
+#ifdef DEBUG_GUI_ENABLE
     gui.add(proto_parameters);
+#endif
     gui.add(main_parameters);
 }
 
 //--------------------------------------------------------------
-void ofApp::drawGui(ofEventArgs &args){
+void ofApp::drawGui(ofEventArgs & args){
     _img.draw(0, 0, THERMAL_WIDTH * 2, THERMAL_HEIGHT * 2);
     gui.draw();
 }
@@ -431,52 +586,18 @@ void ofApp::exitGui(ofEventArgs & args){
 #ifdef VERBOSE_MODE
     cout << __PRETTY_FUNCTION__ << endl;
 #endif
-    _nback_running.removeListener(this, &ofApp::nbackCallback);
+    _nback_running.removeListener(this, &ofApp::nbackRunCallback);
     _recording.removeListener(this, &ofApp::recordingCallback);
     _kill_app.removeListener(this, &ofApp::killAppCallback);
-    _whole_study_running.removeListener(this, &ofApp::wholeStudyRunningCallback);
+    _whole_study_running.removeListener(this, &ofApp::wholeStudyRunCallback);
 }
 
 //--------------------------------------------------------------
-void ofApp::nbackCallback(bool & val){
+void ofApp::keyReleasedGui(ofKeyEventArgs & args){
 #ifdef VERBOSE_MODE
-    cout << __PRETTY_FUNCTION__ << val << endl;
+	cout << __PRETTY_FUNCTION__ << endl;
 #endif
-    if(val){
-        nback.start();
-        if(_is_recording){
-            csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
-                                    "-",    // system_state (START/STOP/ERROR)
-                                    "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
-                                            // HCLHV/HCLLV/LCLHV/LCLLV)
-                                    "-",    // frame_file_name  (*.pgm)
-                                    "START",    // nback_state  (START/STOP/NEW/HIDDEN)
-                                    nback.getLastCharacter(),    // nback_character (current character)
-                                    "-",    // nback_response (subject's response)
-                                    "-",    // nback_true_or_false (T/F)
-                                    "-",    // music_state (START/STOP/ERROR)
-                                    "-",    // music_id (*.mp3)
-                                    "-"     // music_pos (0.0-1.0)
-                                    );
-        }
-    }else{
-        nback.stop();
-        if(_is_recording){
-            csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
-                                    "-",    // system_state (START/STOP/ERROR)
-                                    "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
-                                            // HCLHV/HCLLV/LCLHV/LCLLV)
-                                    "-",    // frame_file_name  (*.pgm)
-                                    "STOP",    // nback_state  (START/STOP/NEW/HIDDEN)
-                                    nback.getLastCharacter(),    // nback_character (current character)
-                                    "-",    // nback_response (subject's response)
-                                    "-",    // nback_true_or_false (T/F)
-                                    "-",    // music_state (START/STOP/ERROR)
-                                    "-",    // music_id (*.mp3)
-                                    "-"     // music_pos (0.0-1.0)
-                                    );
-        }
-    }
+	this->keyReleased(args.key);
 }
 
 //--------------------------------------------------------------
@@ -543,16 +664,18 @@ void ofApp::killAppCallback(bool & val){
 }
 
 //--------------------------------------------------------------
-void ofApp::wholeStudyRunningCallback(bool & val){
+void ofApp::wholeStudyRunCallback(bool & val){
 #ifdef VERBOSE_MODE
     cout << __PRETTY_FUNCTION__ << val << endl;
 #endif
-    if(val){
-        this->studyScenarioChangeCallback();
-    }else{
-        this->cancelBackgroundThread(_thread_name);
-        _study_scenario_count = 0;
-        this->studyScenarioChangeCallback();
-    }
+	this->cancelBackgroundThread(_thread_name);
+	_study_scenario_count = 0;
+	
+	if(val){
+		this->startWholeStudy();
+		this->studyScenarioChangeCallback();
+	}else{
+		this->stopWholeStudy();
+	}
 }
 

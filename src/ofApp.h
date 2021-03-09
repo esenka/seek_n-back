@@ -15,6 +15,7 @@
 // if it's in somewhere outside the project folder,
 // you can specify the paths in absolute path format
 // i.e. replacing "stimuli/HCLHV" to "/Users/esen/Documents/stimuli/HCLHV"
+#define PRACTICE_PATH "stimuli/practice"
 #define HCLHV_PATH "stimuli/HCLHV"
 #define HCLLV_PATH "stimuli/HCLLV"
 #define LCLHV_PATH "stimuli/LCLHV"
@@ -29,6 +30,13 @@
 #define TRACKS_FOR_EACH_SESSION 3
 #define SOUND_SAMPLING_RATE 44100
 #define SOUND_BUFFER_SIZE 256
+
+#define NBACK_BACK_COUNT 3
+// the time for each round in Nback task can be calculated by
+// NBACK_CHAR_TIME_MS + NBACK_BLANK_TIME_MS
+#define NBACK_CHAR_TIME_MS 500
+#define NBACK_BLANK_TIME_MS 2000
+#define NBACK_RANDOMNESS_RATE 0.2
 
 #define STUDY_INTRO_MESSAGE_MAIN "Stay there..."
 #define STUDY_INTRO_MESSAGE_SUB "Just relax and wait for study starts (20mins)"
@@ -47,6 +55,7 @@
 
 // SYSTEM SETUP
 #define VERBOSE_MODE 1	// comment this line out to suppress verbose output
+#define DEBUG_GUI_ENABLE 1	// comment this line out to hide debug GUI options
 
 static std::map<std::string, std::string> _csv_header_and_value = {
     {"system_timestamp_millis", ""},
@@ -77,25 +86,6 @@ csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
                         );
 */
 
-/*
- * SCENES:
- * 0  - none
- * 1  - climate init (intro)
- * 2  - 1 minute calibration
- * 3  - practice intro
- * 4  - practice session
- * 5  - 5 minutes pause
- * 6  - main intro
- * 7  - LCLLV
- * 8  - 5 minutes pause
- * 9  - LCLHV
- * 10 - 5 minutes pause
- * 11 - HCLLV
- * 12 - 5 minutes pause
- * 13 - HCLHV
- * 14 - end
- */
-
 class ofApp : public ofBaseApp{
 
 	public:
@@ -112,41 +102,80 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
   
         // STUDY INPUT
-        void seekFrameCallback(bool & val);
+		// seek thermal camera
+        void seekNewFrameCallback(bool & val);
+		ofxSeekThermalGrabber seek;
+		ofImage _img;
+		unsigned int _seek_frame_number;
+	
+		// nback task
         void nbackNewCharCallback(std::string & val);
         void nbackCharHiddenCallback(bool & val);
         std::string nbackResultToString(int result);
-        ofxSeekThermalGrabber seek;
+		void nbackRunCallback(bool & val);
         ofxNbackTest nback;
         
         // STUDY OUTPUT
         ofxRHUtilities::SimpleCsvLogger csv;
         std::vector<std::string> _csv_header;
         std::string _recording_path;
-        unsigned int _seek_frame_number;
         bool _is_recording;
         
         // STUDY DISPLAY
-        ofImage _img;
+		void drawStringCenterWithRatio(std::string message,
+									   float center_x, float center_y,
+									   float rate);
         ofTrueTypeFont font;
         std::string _study_scene_main_phrase;
         std::string _study_scene_sub_phrase;
+		float _study_phrase_sub_to_main_ratio;
         
         // STUDY MANAGEMENT
         void studyScenarioChangeCallback();
         void cancelBackgroundThread(const std::string & tname);
+		void startWholeStudy();
+		void stopWholeStudy();
+		void audioFileManager();
         ofxRHUtilities::ThreadMap threadMap;
         std::thread _thread;
         const std::string _thread_name = "WORKER_THREAD";
         unsigned _study_scenario_count;
+		/*
+		 * SCENES:
+		 * 0  - none
+		 * 1  - climate init (intro)
+		 * 2  - 1 minute calibration
+		 * 3  - practice intro
+		 * 4  - practice session
+		 * 5  - 5 minutes pause
+		 * 6  - main intro
+		 * 7  - LCLLV
+		 * 8  - 5 minutes pause
+		 * 9  - LCLHV
+		 * 10 - 5 minutes pause
+		 * 11 - HCLLV
+		 * 12 - 5 minutes pause
+		 * 13 - HCLHV
+		 * 14 - end
+		 */
+		unsigned _current_audio_count;
+		/*
+		 * AUDIO_COUNT:
+		 * 0: HCLHV
+		 * 1: HCLLV
+		 * 2: LCLHV
+		 * 3: LCLLV
+		 */
         
         // AUDIO MANAGEMENT
         void audioOut(ofSoundBuffer & buffer);
         bool lookupFilesInDir(std::string target_path,
                               std::string extension,
-                              std::vector<std::string> & file_list);
+                              std::vector<std::string> & file_list,
+							  bool clear_list_buffer);
         ofSoundStream sound_stream;
         ofSoundPlayer player;
+		std::vector<std::string> _practice_sounds;
         std::vector<std::string> _hclhv_sounds;
         std::vector<std::string> _hcllv_sounds;
         std::vector<std::string> _lclhv_sounds;
@@ -156,21 +185,23 @@ class ofApp : public ofBaseApp{
         void setupGui();
         void drawGui(ofEventArgs & args);
         void exitGui(ofEventArgs & args);
-        void nbackCallback(bool & val);
+		void keyReleasedGui(ofKeyEventArgs & args);
         void recordingCallback(bool & val);
         void killAppCallback(bool & val);
-        void wholeStudyRunningCallback(bool & val);
+        void wholeStudyRunCallback(bool & val);
         
+		// PARAMETERS
         ofParameterGroup proto_parameters;
+		ofParameter<bool> _nback_visible;
         ofParameter<bool> _nback_running;
         ofParameter<bool> _recording;
-        ofParameter<bool> _kill_app;
         
         ofParameterGroup main_parameters;
         ofParameter<std::string> _participant_id;
         ofParameter<std::string> _file_path;
         ofParameter<std::string> _file_prefix;
         ofParameter<bool> _whole_study_running;
+		ofParameter<bool> _kill_app;
         
         ofxPanel gui;
 };

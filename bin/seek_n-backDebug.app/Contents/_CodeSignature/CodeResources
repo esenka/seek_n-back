@@ -11,6 +11,15 @@
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>Frameworks/libfmod.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			pkSkKyInmuNxtTPhCHY8+iRt3uw=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"a644a42b22279ae371b533e108763cfa246ddeec" or cdhash H"10d60f640cc18827dfd9a6cd5e60cd3995b3e7b1"</string>
+		</dict>
 		<key>Frameworks/libfmodex.dylib</key>
 		<dict>
 			<key>cdhash</key>
