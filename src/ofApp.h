@@ -60,6 +60,7 @@
 static std::map<std::string, std::string> _csv_header_and_value = {
     {"system_timestamp_millis", ""},
     {"system_state",            ""},
+    {"study_state",             ""},
     {"frame_file_name",         ""},
     {"nback_state",             ""},
     {"nback_character",         ""},
@@ -67,8 +68,7 @@ static std::map<std::string, std::string> _csv_header_and_value = {
     {"nback_true_or_false",     ""},
     {"music_state",             ""},
     {"music_id",                ""},
-    {"music_pos",               ""},
-    {"study_state",             ""},
+    {"music_pos",               ""}
 };
 /*
 csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
@@ -125,6 +125,9 @@ class ofApp : public ofBaseApp{
 		void drawStringCenterWithRatio(std::string message,
 									   float center_x, float center_y,
 									   float rate);
+        void drawProgressBarCenterWithSize(float center_x, float center_y,
+                                           float size_w, float size_h,
+                                           float prev_time, float next_time);
         ofTrueTypeFont font;
         std::string _study_scene_main_phrase;
         std::string _study_scene_sub_phrase;
@@ -158,16 +161,10 @@ class ofApp : public ofBaseApp{
 		 * 13 - HCLHV
 		 * 14 - end
 		 */
-		unsigned _current_audio_kind;
-		/*
-		 * AUDIO_COUNT:
-		 * 0: HCLHV
-		 * 1: HCLLV
-		 * 2: LCLHV
-		 * 3: LCLLV
-		 */
         unsigned _current_audio_pos;
         std::string _study_state;
+        float _prev_progress_time;
+        float _next_progress_time;
         
         // AUDIO MANAGEMENT
         void audioOut(ofSoundBuffer & buffer);
@@ -182,6 +179,8 @@ class ofApp : public ofBaseApp{
         std::vector<std::string> _hcllv_sounds;
         std::vector<std::string> _lclhv_sounds;
         std::vector<std::string> _lcllv_sounds;
+        std::string _current_sound_which;
+        bool _b_music_already_playing;
   
         // GUI WINDOW
         void setupGui();

@@ -23,11 +23,10 @@ void ofApp::setup(){
     ofAddListener(nback.char_hidden_evt, this, &ofApp::nbackCharHiddenCallback);
 	
 	// study log export setup
-	std::map<std::string, std::string>::iterator itr = _csv_header_and_value.begin();
-	while(itr!=_csv_header_and_value.end()){
-		_csv_header.push_back(itr->first);
-		itr++;
-	}
+    if(_csv_header.size()) _csv_header.clear();
+    for(auto & v : _csv_header_and_value){
+        _csv_header.push_back(v.first);
+    }
 	
 	// study display config
 	font.load(RYO_FONT_PATH, 64);
@@ -49,17 +48,21 @@ void ofApp::setup(){
 	this->lookupFilesInDir(HCLLV_PATH, "mp3", _hcllv_sounds, true);
 	this->lookupFilesInDir(LCLHV_PATH, "mp3", _lclhv_sounds, true);
 	this->lookupFilesInDir(LCLLV_PATH, "mp3", _lcllv_sounds, true);
-    
-	// variables init
+    player.setLoop(false);
+ 
+    // variables init
 	_recording_path = "";
 	_is_recording = false;
 	_study_scene_main_phrase = "";
 	_study_scene_sub_phrase = "";
 	_study_phrase_sub_to_main_ratio = 0.4f;
 	_study_scenario_count = 0;
-	_current_audio_kind = 0;
     _current_audio_pos = 0;
-    _study_state = "";
+    _study_state = "-";
+    _prev_progress_time = 0.0f;
+    _next_progress_time = 0.0f;
+    _current_sound_which = "-";
+    _b_music_already_playing = false;
 }
 
 //--------------------------------------------------------------
@@ -76,6 +79,147 @@ void ofApp::update(){
     if(nback.isTestRunning()){
         nback.update();
     }
+    if(_whole_study_running){
+		switch(_study_scenario_count){
+			case 0:     // NONE
+				break;
+			case 1:     // climate init (intro)
+				break;
+			case 2:     // 1 minute calib
+				break;
+			case 3:     // practice intro
+				break;
+			case 4:     // practice session
+                if(!_b_music_already_playing){
+                    if(!player.isPlaying()){
+                        if(player.isLoaded()){
+                            player.unload();
+                        }
+                        player.load(_practice_sounds[_current_audio_pos]);
+                        _current_sound_which = _practice_sounds[_current_audio_pos];
+                        player.play();
+                        _b_music_already_playing = true;
+                        
+                        if(_current_audio_pos < _practice_sounds.size() - 1){
+                            _current_audio_pos++;
+                        }else{
+                            _current_audio_pos = 0;
+                            this->studyScenarioChangeCallback();
+                        }
+                    }
+                }else{
+                    if(!player.isPlaying()){
+                        _b_music_already_playing = false;
+                    }
+                }
+                break;
+			case 7:     // LCLLV
+                if(!_b_music_already_playing){
+                    if(!player.isPlaying()){
+                        if(player.isLoaded()){
+                            player.unload();
+                        }
+                        player.load(_lcllv_sounds[_current_audio_pos]);
+                        _current_sound_which = _lcllv_sounds[_current_audio_pos];
+                        player.play();
+                        _b_music_already_playing = true;
+                        
+                        if(_current_audio_pos < _lcllv_sounds.size() - 1){
+                            _current_audio_pos++;
+                        }else{
+                            _current_audio_pos = 0;
+                            this->studyScenarioChangeCallback();
+                        }
+                    }
+                }else{
+                    if(!player.isPlaying()){
+                        _b_music_already_playing = false;
+                    }
+                }
+                break;
+			case 9:     // LCLHV
+                if(!_b_music_already_playing){
+                    if(!player.isPlaying()){
+                        if(player.isLoaded()){
+                            player.unload();
+                        }
+                        player.load(_lclhv_sounds[_current_audio_pos]);
+                        _current_sound_which = _lclhv_sounds[_current_audio_pos];
+                        player.play();
+                        _b_music_already_playing = true;
+                        
+                        if(_current_audio_pos < _lclhv_sounds.size() - 1){
+                            _current_audio_pos++;
+                        }else{
+                            _current_audio_pos = 0;
+                            this->studyScenarioChangeCallback();
+                        }
+                    }
+                }else{
+                    if(!player.isPlaying()){
+                        _b_music_already_playing = false;
+                    }
+                }
+                break;
+			case 11:    // HCLLV
+                if(!_b_music_already_playing){
+                    if(!player.isPlaying()){
+                        if(player.isLoaded()){
+                            player.unload();
+                        }
+                        player.load(_hcllv_sounds[_current_audio_pos]);
+                        _current_sound_which = _hcllv_sounds[_current_audio_pos];
+                        player.play();
+                        _b_music_already_playing = true;
+                        
+                        if(_current_audio_pos < _hcllv_sounds.size() - 1){
+                            _current_audio_pos++;
+                        }else{
+                            _current_audio_pos = 0;
+                            this->studyScenarioChangeCallback();
+                        }
+                    }
+                }else{
+                    if(!player.isPlaying()){
+                        _b_music_already_playing = false;
+                    }
+                }
+                break;
+			case 13:    // HCLHV
+                if(!_b_music_already_playing){
+                    if(!player.isPlaying()){
+                        if(player.isLoaded()){
+                            player.unload();
+                        }
+                        player.load(_hclhv_sounds[_current_audio_pos]);
+                        _current_sound_which = _hclhv_sounds[_current_audio_pos];
+                        player.play();
+                        _b_music_already_playing = true;
+                        
+                        if(_current_audio_pos < _hclhv_sounds.size() - 1){
+                            _current_audio_pos++;
+                        }else{
+                            _current_audio_pos = 0;
+                            this->studyScenarioChangeCallback();
+                        }
+                    }
+                }else{
+                    if(!player.isPlaying()){
+                        _b_music_already_playing = false;
+                    }
+                }
+				break;
+			case 5:     // 5 minutes pause
+			case 8:
+			case 10:
+			case 12:
+				break;
+			case 6:     // main intro
+				break;
+			case 14:    // end
+				break;
+		}
+	}
 }
 
 //--------------------------------------------------------------
@@ -94,30 +238,31 @@ void ofApp::draw(){
 		nback.draw(w/2, h/2-h/4, w/2, w/2);
 	}
 	if(_whole_study_running){
+        this->drawStringCenterWithRatio(_study_scene_main_phrase,
+                                        w/2, h/2+h/4, 0.5);
+        this->drawStringCenterWithRatio(_study_scene_sub_phrase,
+                                        w/2, h/2+h/4+50, 0.3);
 		switch(_study_scenario_count){
 			case 0:     // NONE
 				break;
 			case 1:     // climate init (intro)
-				break;
 			case 2:     // 1 minute calib
-				break;
 			case 3:     // practice intro
-				break;
-			case 4:     // practice session
-			case 7:     // LCLLV
-			case 9:     // LCLHV
-			case 11:    // HCLLV
-			case 13:    // HCLHV
-				break;
 			case 5:     // 5 minutes pause
 			case 8:
 			case 10:
 			case 12:
-				break;
 			case 6:     // main intro
-				break;
 			case 14:    // end
+                this->drawProgressBarCenterWithSize(w/2, h-30, w/2, 30,
+                                                    _prev_progress_time, _next_progress_time);
 				break;
+            case 4:     // practice session
+			case 7:     // LCLLV
+			case 9:     // LCLHV
+			case 11:    // HCLLV
+			case 13:    // HCLHV
+                break;
 		}
 	}
 }
@@ -129,10 +274,10 @@ void ofApp::exit(){
 #endif
 	// cleanup everything
 	
-	if(nback.isTestRunning()){
+	if(nback.isTestRunning() || _whole_study_running){
         csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
                                 "ERROR",    // system_state (START/STOP/ERROR)
-                                "-",    // study_state (START/STOP/CALIB/INTRO/PRACTICE/
+                                _study_state,    // study_state (START/STOP/CALIB/INTRO/PRACTICE/
                                         //              INTVL/HCLHV/HCLLV/LCLHV/LCLLV)
                                 "-",    // frame_file_name  (*.pgm)
                                 "-",    // nback_state  (START/STOP/NEW/HIDDEN)
@@ -140,7 +285,7 @@ void ofApp::exit(){
                                 "-",    // nback_response (subject's response)
                                 "-",    // nback_true_or_false (T/F)
                                 "-",    // music_state (START/STOP/ERROR)
-                                "-",    // music_id (*.mp3)
+                                _current_sound_which,    // music_id (*.mp3)
                                 "-"     // music_pos (0.0-1.0)
                                 );
 		csv.stop();
@@ -171,7 +316,7 @@ void ofApp::keyReleased(int key){
                 nback.submitResponse(true);
                 csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
                                         "-",    // system_state (START/STOP/ERROR)
-                                        "-",    // study_state (START/STOP/CALIB/INTRO/PRACTICE/
+                                        _study_state,    // study_state (START/STOP/CALIB/INTRO/PRACTICE/
                                                 //              INTVL/HCLHV/HCLLV/LCLHV/LCLLV)
                                         "-",    // frame_file_name  (*.pgm)
                                         "-",    // nback_state  (START/STOP/NEW/HIDDEN)
@@ -179,7 +324,7 @@ void ofApp::keyReleased(int key){
                                         "TRUE",    // nback_response (subject's response)
                                         this->nbackResultToString(nback.isLastResponseTrue()),    // nback_true_or_false (T/F)
                                         "-",    // music_state (START/STOP/ERROR)
-                                        "-",    // music_id (*.mp3)
+                                        _current_sound_which,    // music_id (*.mp3)
                                         (player.isPlaying() ? std::to_string(player.getPosition())
                                                             : "-")     // music_pos (0.0-1.0)
                                         );
@@ -190,7 +335,7 @@ void ofApp::keyReleased(int key){
                 nback.submitResponse(false);
                 csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
                                         "-",    // system_state (START/STOP/ERROR)
-                                        "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                        _study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
                                                 // HCLHV/HCLLV/LCLHV/LCLLV)
                                         "-",    // frame_file_name  (*.pgm)
                                         "-",    // nback_state  (START/STOP/NEW/HIDDEN)
@@ -198,8 +343,9 @@ void ofApp::keyReleased(int key){
                                         "FALSE",    // nback_response (subject's response)
                                         this->nbackResultToString(nback.isLastResponseTrue()),    // nback_true_or_false (T/F)
                                         "-",    // music_state (START/STOP/ERROR)
-                                        "-",    // music_id (*.mp3)
-                                        "-"     // music_pos (0.0-1.0)
+                                        _current_sound_which,    // music_id (*.mp3)
+                                        (player.isPlaying() ? std::to_string(player.getPosition())
+                                                            : "-")     // music_pos (0.0-1.0)
                                         );
             }
             break;
@@ -247,7 +393,7 @@ void ofApp::seekNewFrameCallback(bool &val){
             pgmfilename << ".pgm";
             csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
                                     "-",    // system_state (START/STOP/ERROR)
-                                    "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                    _study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
                                             // HCLHV/HCLLV/LCLHV/LCLLV)
                                     pgmfilename.str(),    // frame_file_name  (*.pgm)
                                     "-",    // nback_state  (START/STOP/NEW/HIDDEN)
@@ -255,8 +401,9 @@ void ofApp::seekNewFrameCallback(bool &val){
                                     "-",    // nback_response (subject's response)
                                     "-",    // nback_true_or_false (T/F)
                                     "-",    // music_state (START/STOP/ERROR)
-                                    "-",    // music_id (*.mp3)
-                                    "-"     // music_pos (0.0-1.0)
+                                    _current_sound_which,    // music_id (*.mp3)
+                                    (player.isPlaying() ? std::to_string(player.getPosition())
+                                                            : "-")     // music_pos (0.0-1.0)
                                     );
             _seek_frame_number++;
         }
@@ -272,7 +419,7 @@ void ofApp::nbackNewCharCallback(std::string &val){
     if(_is_recording){
         csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
                                 "-",    // system_state (START/STOP/ERROR)
-                                "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                _study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
                                         // HCLHV/HCLLV/LCLHV/LCLLV)
                                 "-",    // frame_file_name  (*.pgm)
                                 "NEW",    // nback_state  (START/STOP/NEW/HIDDEN)
@@ -280,8 +427,9 @@ void ofApp::nbackNewCharCallback(std::string &val){
                                 "-",    // nback_response (subject's response)
                                 "-",    // nback_true_or_false (T/F)
                                 "-",    // music_state (START/STOP/ERROR)
-                                "-",    // music_id (*.mp3)
-                                "-"     // music_pos (0.0-1.0)
+                                _current_sound_which,    // music_id (*.mp3)
+                                (player.isPlaying() ? std::to_string(player.getPosition())
+                                                            : "-")     // music_pos (0.0-1.0)
                                 );
     }
 }
@@ -295,7 +443,7 @@ void ofApp::nbackCharHiddenCallback(bool &val){
     if(_is_recording){
         csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
                                 "-",    // system_state (START/STOP/ERROR)
-                                "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                _study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
                                         // HCLHV/HCLLV/LCLHV/LCLLV)
                                 "-",    // frame_file_name  (*.pgm)
                                 "HIDDEN",    // nback_state  (START/STOP/NEW/HIDDEN)
@@ -303,8 +451,9 @@ void ofApp::nbackCharHiddenCallback(bool &val){
                                 "-",    // nback_response (subject's response)
                                 "-",    // nback_true_or_false (T/F)
                                 "-",    // music_state (START/STOP/ERROR)
-                                "-",    // music_id (*.mp3)
-                                "-"     // music_pos (0.0-1.0)
+                                _current_sound_which,    // music_id (*.mp3)
+                                (player.isPlaying() ? std::to_string(player.getPosition())
+                                                            : "-")     // music_pos (0.0-1.0)
                                 );
     }
 }
@@ -332,7 +481,7 @@ void ofApp::nbackRunCallback(bool & val){
 		if(_is_recording){
 			csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
 									"-",    // system_state (START/STOP/ERROR)
-									"-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+									_study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
 											// HCLHV/HCLLV/LCLHV/LCLLV)
 									"-",    // frame_file_name  (*.pgm)
 									"START",    // nback_state  (START/STOP/NEW/HIDDEN)
@@ -340,8 +489,9 @@ void ofApp::nbackRunCallback(bool & val){
 									"-",    // nback_response (subject's response)
 									"-",    // nback_true_or_false (T/F)
 									"-",    // music_state (START/STOP/ERROR)
-									"-",    // music_id (*.mp3)
-									"-"     // music_pos (0.0-1.0)
+									_current_sound_which,    // music_id (*.mp3)
+									(player.isPlaying() ? std::to_string(player.getPosition())
+                                                            : "-")     // music_pos (0.0-1.0)
 									);
 		}
 	}else{
@@ -349,7 +499,7 @@ void ofApp::nbackRunCallback(bool & val){
 		if(_is_recording){
 			csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
 									"-",    // system_state (START/STOP/ERROR)
-									"-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+									_study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
 											// HCLHV/HCLLV/LCLHV/LCLLV)
 									"-",    // frame_file_name  (*.pgm)
 									"STOP",    // nback_state  (START/STOP/NEW/HIDDEN)
@@ -357,8 +507,9 @@ void ofApp::nbackRunCallback(bool & val){
 									"-",    // nback_response (subject's response)
 									"-",    // nback_true_or_false (T/F)
 									"-",    // music_state (START/STOP/ERROR)
-									"-",    // music_id (*.mp3)
-									"-"     // music_pos (0.0-1.0)
+									_current_sound_which,    // music_id (*.mp3)
+									(player.isPlaying() ? std::to_string(player.getPosition())
+                                                            : "-")     // music_pos (0.0-1.0)
 									);
 		}
 	}
@@ -367,10 +518,7 @@ void ofApp::nbackRunCallback(bool & val){
 //--------------------------------------------------------------
 void ofApp::drawStringCenterWithRatio(std::string message,
 									  float center_x, float center_y, float rate){
-#ifdef VERBOSE_MODE
-	cout << __PRETTY_FUNCTION__ << endl;
-#endif
-	// just a simple utility function to draw a message on a window
+    // just a simple utility function to draw a message on a window
 	// with a specific scaling amount
 	ofRectangle r = font.getStringBoundingBox(message, 0, 0);
 	
@@ -381,6 +529,27 @@ void ofApp::drawStringCenterWithRatio(std::string message,
 		}
 		font.drawString(message, 0.0, 0.0);
 	ofPopMatrix();
+}
+
+//--------------------------------------------------------------
+void ofApp::drawProgressBarCenterWithSize(float center_x, float center_y,
+                                          float size_w, float size_h,
+                                          float prev_time, float next_time){
+    // just a simple utility function to draw a progress bar
+    // in somewhere by specifying the center position and the size
+    // of it
+    float current_time = ofGetElapsedTimef();
+    float rate = ofMap(current_time, prev_time, next_time, 0.0, 1.0);
+    
+    ofPushMatrix();
+        ofTranslate(center_x, center_y);
+        ofPushStyle();
+            ofNoFill();
+            ofDrawRectangle(center_x-size_w/2, center_y-size_h/2, size_w, size_h);
+            ofFill();
+            ofDrawRectangle(center_x-size_w/2, center_y-size_h/2, size_w*rate, size_h);
+        ofPopStyle();
+    ofPopMatrix();
 }
 
 //--------------------------------------------------------------
@@ -395,6 +564,11 @@ void ofApp::studyScenarioChangeCallback(){
         _study_scenario_count >= 12 ? _study_scenario_count = 0
                                     : _study_scenario_count++;
     }
+    _prev_progress_time = 0.0f;
+    _next_progress_time = 0.0f;
+    _current_sound_which = "-";
+    _current_audio_pos = 0;
+    _b_music_already_playing = false;
     
     switch(_study_scenario_count){
         case 0:     // NONE
@@ -402,9 +576,28 @@ void ofApp::studyScenarioChangeCallback(){
             _study_scene_sub_phrase = "";
             break;
         case 1:     // climate init (intro)
+            _study_state = "INTRO";
+            if(_is_recording){
+                csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                        "-",    // system_state (START/STOP/ERROR)
+                                        _study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                                // HCLHV/HCLLV/LCLHV/LCLLV)
+                                        "-",    // frame_file_name  (*.pgm)
+                                        "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                        nback.getLastCharacter(),    // nback_character (current character)
+                                        "-",    // nback_response (subject's response)
+                                        "-",    // nback_true_or_false (T/F)
+                                        "-",    // music_state (START/STOP/ERROR)
+                                        _current_sound_which,    // music_id (*.mp3)
+                                        "-"     // music_pos (0.0-1.0)
+                                        );
+            }
             _study_scene_main_phrase = STUDY_INTRO_MESSAGE_MAIN;
             _study_scene_sub_phrase = STUDY_INTRO_MESSAGE_SUB;
+            
             if(_whole_study_running){
+                _prev_progress_time = ofGetElapsedTimef();
+                _next_progress_time = _prev_progress_time + 1200; // 1200 = sec = 20mins
                 _thread = std::thread([this](){
                     std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_INTRO_TIME));
                     this->studyScenarioChangeCallback();
@@ -414,10 +607,29 @@ void ofApp::studyScenarioChangeCallback(){
             }
             break;
         case 2:     // 1 minute calib
+            _study_state = "CALIB";
+            if(_is_recording){
+                csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                        "-",    // system_state (START/STOP/ERROR)
+                                        _study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                                // HCLHV/HCLLV/LCLHV/LCLLV)
+                                        "-",    // frame_file_name  (*.pgm)
+                                        "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                        nback.getLastCharacter(),    // nback_character (current character)
+                                        "-",    // nback_response (subject's response)
+                                        "-",    // nback_true_or_false (T/F)
+                                        "-",    // music_state (START/STOP/ERROR)
+                                        _current_sound_which,    // music_id (*.mp3)
+                                        "-"     // music_pos (0.0-1.0)
+                                        );
+            }
             _study_scene_main_phrase = STUDY_CALIB_MESSAGE_MAIN;
             _study_scene_sub_phrase = STUDY_CALIB_MESSAGE_SUB;
+            
             if(_whole_study_running){
                 _thread = std::thread([this](){
+                    _prev_progress_time = ofGetElapsedTimef();
+                    _next_progress_time = _prev_progress_time + 60; // 60 = sec = 1min
                     std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_CALIB_TIME));
                     this->studyScenarioChangeCallback();
                 });
@@ -426,9 +638,31 @@ void ofApp::studyScenarioChangeCallback(){
             }
             break;
         case 3:     // practice intro
+            _study_state = "INTRO";
+            if(_is_recording){
+                csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                        "-",    // system_state (START/STOP/ERROR)
+                                        _study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                                // HCLHV/HCLLV/LCLHV/LCLLV)
+                                        "-",    // frame_file_name  (*.pgm)
+                                        "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                        nback.getLastCharacter(),    // nback_character (current character)
+                                        "-",    // nback_response (subject's response)
+                                        "-",    // nback_true_or_false (T/F)
+                                        "-",    // music_state (START/STOP/ERROR)
+                                        _current_sound_which,    // music_id (*.mp3)
+                                        (player.isPlaying() ? std::to_string(player.getPosition())
+                                                            : "-")     // music_pos (0.0-1.0)
+                                        );
+            }
             _study_scene_main_phrase = STUDY_PRACTICE_MESSAGE_MAIN;
             _study_scene_sub_phrase = STUDY_PRACTICE_MESSAGE_SUB;
+            _nback_visible = true;
+            _nback_running = true;
+            
             if(_whole_study_running){
+                _prev_progress_time = ofGetElapsedTimef();
+                _next_progress_time = _prev_progress_time + 60; // 60 = sec = 1min
                 _thread = std::thread([this](){
                     std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_CALIB_TIME));
                     this->studyScenarioChangeCallback();
@@ -438,20 +672,152 @@ void ofApp::studyScenarioChangeCallback(){
             }
             break;
         case 4:     // practice session
-        case 7:     // LCLLV
-        case 9:     // LCLHV
-        case 11:    // HCLLV
-        case 13:    // HCLHV
+            _study_state = "PRACTICE";
+            if(_is_recording){
+                csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                        "-",    // system_state (START/STOP/ERROR)
+                                        _study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                                // HCLHV/HCLLV/LCLHV/LCLLV)
+                                        "-",    // frame_file_name  (*.pgm)
+                                        "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                        nback.getLastCharacter(),    // nback_character (current character)
+                                        "-",    // nback_response (subject's response)
+                                        "-",    // nback_true_or_false (T/F)
+                                        "-",    // music_state (START/STOP/ERROR)
+                                        _current_sound_which,    // music_id (*.mp3)
+                                        (player.isPlaying() ? std::to_string(player.getPosition())
+                                                            : "-")     // music_pos (0.0-1.0)
+                                        );
+            }
             _study_scene_main_phrase = STUDY_RUNNING_MESSAGE_MAIN;
             _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB;
+            _b_music_already_playing = false;
+            break;
+        case 7:     // LCLLV
+            _study_state = "LCLLV";
+            if(_is_recording){
+                csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                        "-",    // system_state (START/STOP/ERROR)
+                                        _study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                                // HCLHV/HCLLV/LCLHV/LCLLV)
+                                        "-",    // frame_file_name  (*.pgm)
+                                        "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                        nback.getLastCharacter(),    // nback_character (current character)
+                                        "-",    // nback_response (subject's response)
+                                        "-",    // nback_true_or_false (T/F)
+                                        "-",    // music_state (START/STOP/ERROR)
+                                        _current_sound_which,    // music_id (*.mp3)
+                                        (player.isPlaying() ? std::to_string(player.getPosition())
+                                                            : "-")     // music_pos (0.0-1.0)
+                                        );
+            }
+            _study_scene_main_phrase = STUDY_RUNNING_MESSAGE_MAIN;
+            _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB;
+            _nback_visible = true;
+            _nback_running = true;
+            _b_music_already_playing = false;
+            break;
+        case 9:     // LCLHV
+            _study_state = "LCLHV";
+            if(_is_recording){
+                csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                        "-",    // system_state (START/STOP/ERROR)
+                                        _study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                                // HCLHV/HCLLV/LCLHV/LCLLV)
+                                        "-",    // frame_file_name  (*.pgm)
+                                        "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                        nback.getLastCharacter(),    // nback_character (current character)
+                                        "-",    // nback_response (subject's response)
+                                        "-",    // nback_true_or_false (T/F)
+                                        "-",    // music_state (START/STOP/ERROR)
+                                        _current_sound_which,    // music_id (*.mp3)
+                                        (player.isPlaying() ? std::to_string(player.getPosition())
+                                                            : "-")     // music_pos (0.0-1.0)
+                                        );
+            }
+            _study_scene_main_phrase = STUDY_RUNNING_MESSAGE_MAIN;
+            _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB;
+            _nback_visible = true;
+            _nback_running = true;
+            _b_music_already_playing = false;
+            break;
+        case 11:    // HCLLV
+            _study_state = "HCLLV";
+            if(_is_recording){
+                csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                        "-",    // system_state (START/STOP/ERROR)
+                                        _study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                                // HCLHV/HCLLV/LCLHV/LCLLV)
+                                        "-",    // frame_file_name  (*.pgm)
+                                        "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                        nback.getLastCharacter(),    // nback_character (current character)
+                                        "-",    // nback_response (subject's response)
+                                        "-",    // nback_true_or_false (T/F)
+                                        "-",    // music_state (START/STOP/ERROR)
+                                        _current_sound_which,    // music_id (*.mp3)
+                                        (player.isPlaying() ? std::to_string(player.getPosition())
+                                                            : "-")     // music_pos (0.0-1.0)
+                                        );
+            }
+            _study_scene_main_phrase = STUDY_RUNNING_MESSAGE_MAIN;
+            _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB;
+            _nback_visible = true;
+            _nback_running = true;
+            _b_music_already_playing = false;
+            break;
+        case 13:    // HCLHV
+            _study_state = "HCLHV";
+            if(_is_recording){
+                csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                        "-",    // system_state (START/STOP/ERROR)
+                                        _study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                                // HCLHV/HCLLV/LCLHV/LCLLV)
+                                        "-",    // frame_file_name  (*.pgm)
+                                        "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                        nback.getLastCharacter(),    // nback_character (current character)
+                                        "-",    // nback_response (subject's response)
+                                        "-",    // nback_true_or_false (T/F)
+                                        "-",    // music_state (START/STOP/ERROR)
+                                        _current_sound_which,    // music_id (*.mp3)
+                                        (player.isPlaying() ? std::to_string(player.getPosition())
+                                                            : "-")     // music_pos (0.0-1.0)
+                                        );
+            }
+            _study_scene_main_phrase = STUDY_RUNNING_MESSAGE_MAIN;
+            _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB;
+            _nback_visible = true;
+            _nback_running = true;
+            _b_music_already_playing = false;
             break;
         case 5:     // 5 minutes pause
         case 8:
         case 10:
         case 12:
+            _study_state = "INTVL";
+            if(_is_recording){
+                csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                        "-",    // system_state (START/STOP/ERROR)
+                                        _study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                                // HCLHV/HCLLV/LCLHV/LCLLV)
+                                        "-",    // frame_file_name  (*.pgm)
+                                        "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                        nback.getLastCharacter(),    // nback_character (current character)
+                                        "-",    // nback_response (subject's response)
+                                        "-",    // nback_true_or_false (T/F)
+                                        "-",    // music_state (START/STOP/ERROR)
+                                        _current_sound_which,    // music_id (*.mp3)
+                                        (player.isPlaying() ? std::to_string(player.getPosition())
+                                                            : "-")     // music_pos (0.0-1.0)
+                                        );
+            }
             _study_scene_main_phrase = STUDY_INTERVAL_MESSAGE_MAIN;
             _study_scene_sub_phrase = STUDY_INTERVAL_MESSAGE_SUB;
+            _nback_visible = false;
+            _nback_running = false;
+            
             if(_whole_study_running){
+                _prev_progress_time = ofGetElapsedTimef();
+                _next_progress_time = _prev_progress_time + 60 * 5; // 300 = sec = 5mins
                 _thread = std::thread([this](){
                     std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_INTVL_TIME));
                     this->studyScenarioChangeCallback();
@@ -461,9 +827,31 @@ void ofApp::studyScenarioChangeCallback(){
             }
             break;
         case 6:     // main intro
+            _study_state = "INTRO";
+            if(_is_recording){
+                csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                        "-",    // system_state (START/STOP/ERROR)
+                                        _study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                                // HCLHV/HCLLV/LCLHV/LCLLV)
+                                        "-",    // frame_file_name  (*.pgm)
+                                        "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                        nback.getLastCharacter(),    // nback_character (current character)
+                                        "-",    // nback_response (subject's response)
+                                        "-",    // nback_true_or_false (T/F)
+                                        "-",    // music_state (START/STOP/ERROR)
+                                        _current_sound_which,    // music_id (*.mp3)
+                                        (player.isPlaying() ? std::to_string(player.getPosition())
+                                                            : "-")     // music_pos (0.0-1.0)
+                                        );
+            }
             _study_scene_main_phrase = STUDY_MAIN_MESSAGE_MAIN;
             _study_scene_sub_phrase = STUDY_MAIN_MESSAGE_SUB;
+            _nback_visible = true;
+            _nback_running = true;
+            
             if(_whole_study_running){
+                _prev_progress_time = ofGetElapsedTimef();
+                _next_progress_time = _prev_progress_time + 60; // 60 = sec = 1min
                 _thread = std::thread([this](){
                     std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_CALIB_TIME));
                     this->studyScenarioChangeCallback();
@@ -473,8 +861,28 @@ void ofApp::studyScenarioChangeCallback(){
             }
             break;
         case 14:    // end
+            _study_state = "STOP";
+            if(_is_recording){
+                csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                                        "-",    // system_state (START/STOP/ERROR)
+                                        _study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                                // HCLHV/HCLLV/LCLHV/LCLLV)
+                                        "-",    // frame_file_name  (*.pgm)
+                                        "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                                        nback.getLastCharacter(),    // nback_character (current character)
+                                        "-",    // nback_response (subject's response)
+                                        "-",    // nback_true_or_false (T/F)
+                                        "-",    // music_state (START/STOP/ERROR)
+                                        _current_sound_which,    // music_id (*.mp3)
+                                        (player.isPlaying() ? std::to_string(player.getPosition())
+                                                            : "-")     // music_pos (0.0-1.0)
+                                        );
+            }
             _study_scene_main_phrase = STUDY_END_MESSAGE_MAIN;
             _study_scene_sub_phrase = STUDY_END_MESSAGE_SUB;
+            _nback_visible = false;
+            _nback_running = false;
+            
             if(_whole_study_running){
                 _thread = std::thread([this](){
                     std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_CALIB_TIME));
@@ -507,7 +915,22 @@ void ofApp::startWholeStudy(){
 #ifdef VERBOSE_MODE
 	cout << __PRETTY_FUNCTION__ << endl;
 #endif
-	
+    _recording = true;
+	csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
+                            "-",    // system_state (START/STOP/ERROR)
+                            _study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                    // HCLHV/HCLLV/LCLHV/LCLLV)
+                            "-",    // frame_file_name  (*.pgm)
+                            "-",    // nback_state  (START/STOP/NEW/HIDDEN)
+                            nback.getLastCharacter(),    // nback_character (current character)
+                            "-",    // nback_response (subject's response)
+                            "-",    // nback_true_or_false (T/F)
+                            "-",    // music_state (START/STOP/ERROR)
+                            _current_sound_which,    // music_id (*.mp3)
+                            (player.isPlaying() ? std::to_string(player.getPosition())
+                                                : "-")     // music_pos (0.0-1.0)
+                            );
+    this->studyScenarioChangeCallback();
 }
 
 //--------------------------------------------------------------
@@ -515,7 +938,9 @@ void ofApp::stopWholeStudy(){
 #ifdef VERBOSE_MODE
 	cout << __PRETTY_FUNCTION__ << endl;
 #endif
-	
+	_recording = false;
+    _study_scenario_count = 0;
+    this->studyScenarioChangeCallback();
 }
 
 //--------------------------------------------------------------
@@ -622,10 +1047,11 @@ void ofApp::recordingCallback(bool & val){
             _recording_path += "-" + std::to_string(ofGetUnixTime());
             ofDirectory::createDirectory(_recording_path);
         }
-        csv.start(_csv_header, _recording_path+"/log.csv");
+        csv.start(_csv_header, _recording_path + "/" + _file_prefix.get() + "log.csv");
+        _study_state = "START";
         csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
                                 "START",    // system_state (START/STOP/ERROR)
-                                "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
+                                _study_state,    // study_state (START/STOP/INTRO/CALIB/INTVL/
                                         // HCLHV/HCLLV/LCLHV/LCLLV)
                                 "-",    // frame_file_name  (*.pgm)
                                 "-",    // nback_state  (START/STOP/NEW/HIDDEN)
@@ -639,8 +1065,9 @@ void ofApp::recordingCallback(bool & val){
         _seek_frame_number = 0;
         _is_recording = true;
     }else{      // STOP
+        _study_state = "STOP";
         csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
-                                "STOP",    // system_state (START/STOP/ERROR)
+                                _study_state,    // system_state (START/STOP/ERROR)
                                 "-",    // study_state (START/STOP/INTRO/CALIB/INTVL/
                                         // HCLHV/HCLLV/LCLHV/LCLLV)
                                 "-",    // frame_file_name  (*.pgm)
@@ -673,11 +1100,9 @@ void ofApp::wholeStudyRunCallback(bool & val){
     cout << __PRETTY_FUNCTION__ << val << endl;
 #endif
 	this->cancelBackgroundThread(_thread_name);
-	_study_scenario_count = 0;
 	
 	if(val){
 		this->startWholeStudy();
-		this->studyScenarioChangeCallback();
 	}else{
 		this->stopWholeStudy();
 	}
