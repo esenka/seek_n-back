@@ -22,9 +22,9 @@
 #define LCLLV_PATH "stimuli/LCLLV"
 
 // TIMING_SETUP
-#define STUDY_INTRO_TIME 1200000    // 20 minutes in MS
+#define STUDY_INTRO_TIME 600000     // 10 minutes in MS
 #define STUDY_CALIB_TIME 60000      // 1 minute in MS
-#define STUDY_INTVL_TIME 300000     // 5 minutes in MS
+#define STUDY_INTVL_TIME 180000     // 3 minutes in MS
 
 // STUDY_SETUP
 #define TRACKS_FOR_EACH_SESSION 3
@@ -39,7 +39,7 @@
 #define NBACK_RANDOMNESS_RATE 0.2
 
 #define STUDY_INTRO_MESSAGE_MAIN "Stay there..."
-#define STUDY_INTRO_MESSAGE_SUB "Just relax and wait for study starts (20mins)"
+#define STUDY_INTRO_MESSAGE_SUB "Just relax and wait for study starts (10mins)"
 #define STUDY_CALIB_MESSAGE_MAIN "Again, stay there..."
 #define STUDY_CALIB_MESSAGE_SUB "Camera calibration process is running, stay there. (1min)"
 #define STUDY_PRACTICE_MESSAGE_MAIN "Practice session starts soon."
@@ -49,7 +49,7 @@
 #define STUDY_RUNNING_MESSAGE_MAIN "Shhh... listen to this."
 #define STUDY_RUNNING_MESSAGE_SUB ""
 #define STUDY_INTERVAL_MESSAGE_MAIN "Break time. Sit back and relax."
-#define STUDY_INTERVAL_MESSAGE_SUB "Wait until the next session starts. (5mins)"
+#define STUDY_INTERVAL_MESSAGE_SUB "Wait until the next session starts. (3mins)"
 #define STUDY_END_MESSAGE_MAIN "Thanks for your participation!"
 #define STUDY_END_MESSAGE_SUB "You can proceed to the questionnaire section."
 
@@ -57,18 +57,18 @@
 #define VERBOSE_MODE 1	// comment this line out to suppress verbose output
 #define DEBUG_GUI_ENABLE 1	// comment this line out to hide debug GUI options
 
-static std::map<std::string, std::string> _csv_header_and_value = {
-    {"system_timestamp_millis", ""},
-    {"system_state",            ""},
-    {"study_state",             ""},
-    {"frame_file_name",         ""},
-    {"nback_state",             ""},
-    {"nback_character",         ""},
-    {"nback_response",          ""},
-    {"nback_true_or_false",     ""},
-    {"music_state",             ""},
-    {"music_id",                ""},
-    {"music_pos",               ""}
+static std::vector<std::string> _csv_header_only = {
+    "system_timestamp_millis",
+    "system_state",
+    "study_state",
+    "frame_file_name",
+    "nback_state",
+    "nback_character",
+    "nback_response",
+    "nback_true_or_false",
+    "music_state",
+    "music_id",
+    "music_pos"
 };
 /*
 csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
@@ -117,7 +117,6 @@ class ofApp : public ofBaseApp{
         
         // STUDY OUTPUT
         ofxRHUtilities::SimpleCsvLogger csv;
-        std::vector<std::string> _csv_header;
         std::string _recording_path;
         bool _is_recording;
         

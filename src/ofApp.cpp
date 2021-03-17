@@ -22,12 +22,6 @@ void ofApp::setup(){
     ofAddListener(nback.new_char_evt, this, &ofApp::nbackNewCharCallback);
     ofAddListener(nback.char_hidden_evt, this, &ofApp::nbackCharHiddenCallback);
 	
-	// study log export setup
-    if(_csv_header.size()) _csv_header.clear();
-    for(auto & v : _csv_header_and_value){
-        _csv_header.push_back(v.first);
-    }
-	
 	// study display config
 	font.load(RYO_FONT_PATH, 64);
 	
@@ -100,7 +94,7 @@ void ofApp::update(){
                         player.play();
                         _b_music_already_playing = true;
                         
-                        if(_current_audio_pos < _practice_sounds.size() - 1){
+                        if(_current_audio_pos < _practice_sounds.size()){
                             _current_audio_pos++;
                         }else{
                             _current_audio_pos = 0;
@@ -124,7 +118,7 @@ void ofApp::update(){
                         player.play();
                         _b_music_already_playing = true;
                         
-                        if(_current_audio_pos < _lcllv_sounds.size() - 1){
+                        if(_current_audio_pos < _lcllv_sounds.size()){
                             _current_audio_pos++;
                         }else{
                             _current_audio_pos = 0;
@@ -148,7 +142,7 @@ void ofApp::update(){
                         player.play();
                         _b_music_already_playing = true;
                         
-                        if(_current_audio_pos < _lclhv_sounds.size() - 1){
+                        if(_current_audio_pos < _lclhv_sounds.size()){
                             _current_audio_pos++;
                         }else{
                             _current_audio_pos = 0;
@@ -172,7 +166,7 @@ void ofApp::update(){
                         player.play();
                         _b_music_already_playing = true;
                         
-                        if(_current_audio_pos < _hcllv_sounds.size() - 1){
+                        if(_current_audio_pos < _hcllv_sounds.size()){
                             _current_audio_pos++;
                         }else{
                             _current_audio_pos = 0;
@@ -196,7 +190,7 @@ void ofApp::update(){
                         player.play();
                         _b_music_already_playing = true;
                         
-                        if(_current_audio_pos < _hclhv_sounds.size() - 1){
+                        if(_current_audio_pos < _hclhv_sounds.size()){
                             _current_audio_pos++;
                         }else{
                             _current_audio_pos = 0;
@@ -209,7 +203,7 @@ void ofApp::update(){
                     }
                 }
 				break;
-			case 5:     // 5 minutes pause
+			case 5:     // 3 minutes pause
 			case 8:
 			case 10:
 			case 12:
@@ -248,7 +242,7 @@ void ofApp::draw(){
 			case 1:     // climate init (intro)
 			case 2:     // 1 minute calib
 			case 3:     // practice intro
-			case 5:     // 5 minutes pause
+			case 5:     // 3 minutes pause
 			case 8:
 			case 10:
 			case 12:
@@ -542,12 +536,12 @@ void ofApp::drawProgressBarCenterWithSize(float center_x, float center_y,
     float rate = ofMap(current_time, prev_time, next_time, 0.0, 1.0);
     
     ofPushMatrix();
-        ofTranslate(center_x, center_y);
+        ofTranslate(center_x-size_w/2, center_y-size_h/2);
         ofPushStyle();
             ofNoFill();
-            ofDrawRectangle(center_x-size_w/2, center_y-size_h/2, size_w, size_h);
+            ofDrawRectangle(0, 0, size_w, size_h);
             ofFill();
-            ofDrawRectangle(center_x-size_w/2, center_y-size_h/2, size_w*rate, size_h);
+            ofDrawRectangle(0, 0, size_w*rate, size_h);
         ofPopStyle();
     ofPopMatrix();
 }
@@ -597,7 +591,7 @@ void ofApp::studyScenarioChangeCallback(){
             
             if(_whole_study_running){
                 _prev_progress_time = ofGetElapsedTimef();
-                _next_progress_time = _prev_progress_time + 1200; // 1200 = sec = 20mins
+                _next_progress_time = _prev_progress_time + 60 * 10; // 600 = sec = 10mins
                 _thread = std::thread([this](){
                     std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_INTRO_TIME));
                     this->studyScenarioChangeCallback();
@@ -713,8 +707,8 @@ void ofApp::studyScenarioChangeCallback(){
             }
             _study_scene_main_phrase = STUDY_RUNNING_MESSAGE_MAIN;
             _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB;
-            _nback_visible = true;
-            _nback_running = true;
+            //_nback_visible = true;
+            //_nback_running = true;
             _b_music_already_playing = false;
             break;
         case 9:     // LCLHV
@@ -817,7 +811,7 @@ void ofApp::studyScenarioChangeCallback(){
             
             if(_whole_study_running){
                 _prev_progress_time = ofGetElapsedTimef();
-                _next_progress_time = _prev_progress_time + 60 * 5; // 300 = sec = 5mins
+                _next_progress_time = _prev_progress_time + 60 * 3; // 180 = sec = 3mins
                 _thread = std::thread([this](){
                     std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_INTVL_TIME));
                     this->studyScenarioChangeCallback();
@@ -1047,7 +1041,7 @@ void ofApp::recordingCallback(bool & val){
             _recording_path += "-" + std::to_string(ofGetUnixTime());
             ofDirectory::createDirectory(_recording_path);
         }
-        csv.start(_csv_header, _recording_path + "/" + _file_prefix.get() + "log.csv");
+        csv.start(_csv_header_only, _recording_path + "/" + _file_prefix.get() + "log.csv");
         _study_state = "START";
         csv.update<std::string>(std::to_string(ofGetSystemTimeMillis()),
                                 "START",    // system_state (START/STOP/ERROR)
