@@ -2,5 +2,8 @@
 bin/*.app*
 *.DS_*
 *.xcworkspacedata
+*.xcuserstate
+*.xcbkptlist
 *.pgm
 *.csv
+*.jpg
