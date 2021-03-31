@@ -107,6 +107,9 @@ class ofApp : public ofBaseApp{
 		ofxSeekThermalGrabber seek;
 		ofImage _img;
 		unsigned int _seek_frame_number;
+  
+        // webcam
+        ofVideoGrabber video;
 	
 		// nback task
         void nbackNewCharCallback(std::string & val);

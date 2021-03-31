@@ -15,6 +15,14 @@ void ofApp::setup(){
     _img.allocate(THERMAL_WIDTH, THERMAL_HEIGHT, OF_IMAGE_COLOR);
     ofAddListener(seek.new_frame_evt, this, &ofApp::seekNewFrameCallback);
     
+    // webcam setup
+    for(auto &d : video.listDevices()){
+        cout << d.id << " / " << d.deviceName << endl;
+    }
+    video.setDeviceID(1);
+    video.setDesiredFrameRate(30);
+    video.initGrabber(THERMAL_WIDTH, THERMAL_HEIGHT);
+    
 	// nback test setup
     nback.setup(NBACK_BACK_COUNT,
 				NBACK_CHAR_TIME_MS, NBACK_BLANK_TIME_MS, NBACK_RANDOMNESS_RATE,
@@ -69,6 +77,9 @@ void ofApp::update(){
         if(seek.isFrameNew()){
             _img.setFromPixels(seek.getVisualizePixels());
         }
+    }
+    if(video.isInitialized()){
+        video.update();
     }
     if(nback.isTestRunning()){
         nback.update();
@@ -286,6 +297,7 @@ void ofApp::exit(){
 		nback.stop();
 	}
 	seek.close();
+    video.close();
 	sound_stream.close();
 	
 	_img.clear();
@@ -399,6 +411,14 @@ void ofApp::seekNewFrameCallback(bool &val){
                                     (player.isPlaying() ? std::to_string(player.getPosition())
                                                             : "-")     // music_pos (0.0-1.0)
                                     );
+                                    
+            std::ostringstream imgfilename;
+            imgfilename << _file_prefix.get();
+            imgfilename << std::internal << std::setfill('0') << std::setw(6);
+            imgfilename << _seek_frame_number;
+            imgfilename << ".jpg";
+            ofSaveImage(video.getPixels(),
+                        _recording_path + "/" + imgfilename.str());
             _seek_frame_number++;
         }
     }
@@ -1000,7 +1020,8 @@ void ofApp::setupGui(){
 
 //--------------------------------------------------------------
 void ofApp::drawGui(ofEventArgs & args){
-    _img.draw(0, 0, THERMAL_WIDTH * 2, THERMAL_HEIGHT * 2);
+    _img.draw(0, 0, THERMAL_WIDTH * 1.5, THERMAL_HEIGHT * 1.5);
+    video.draw(0, THERMAL_HEIGHT * 1.5, THERMAL_WIDTH * 1.5, THERMAL_HEIGHT * 1.5);
     gui.draw();
 }
 
