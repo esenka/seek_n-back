@@ -24,7 +24,7 @@ void ofApp::setup(){
     video.initGrabber(THERMAL_WIDTH, THERMAL_HEIGHT);
     
 	// nback test setup
-    nback.setup(NBACK_BACK_COUNT,
+    nback.setup(NBACK_COUNT_PRAC,
 				NBACK_CHAR_TIME_MS, NBACK_BLANK_TIME_MS, NBACK_RANDOMNESS_RATE,
 				RYO_FONT_PATH);
     ofAddListener(nback.new_char_evt, this, &ofApp::nbackNewCharCallback);
@@ -59,6 +59,7 @@ void ofApp::setup(){
 	_study_scene_sub_phrase = "";
 	_study_phrase_sub_to_main_ratio = 0.4f;
 	_study_scenario_count = 0;
+    _study_scenario_counts.clear();
     _current_audio_pos = 0;
     _study_state = "-";
     _prev_progress_time = 0.0f;
@@ -96,22 +97,20 @@ void ofApp::update(){
 				break;
 			case 4:     // practice session
                 if(!_b_music_already_playing){
-                    if(!player.isPlaying()){
-                        if(player.isLoaded()){
-                            player.unload();
-                        }
-                        player.load(_practice_sounds[_current_audio_pos]);
-                        _current_sound_which = _practice_sounds[_current_audio_pos];
-                        player.play();
-                        _b_music_already_playing = true;
-                        
-                        if(_current_audio_pos < _practice_sounds.size()){
-                            _current_audio_pos++;
-                        }else{
+                    if(player.isLoaded()){
+                        player.unload();
+                        if(_current_audio_pos >= _practice_sounds.size()-1){
                             _current_audio_pos = 0;
                             this->studyScenarioChangeCallback();
+                            break;
+                        }else{
+                            _current_audio_pos++;
                         }
                     }
+                    player.load(_practice_sounds[_current_audio_pos]);
+                    _current_sound_which = _practice_sounds[_current_audio_pos];
+                    player.play();
+                    _b_music_already_playing = true;
                 }else{
                     if(!player.isPlaying()){
                         _b_music_already_playing = false;
@@ -120,22 +119,20 @@ void ofApp::update(){
                 break;
 			case 7:     // LCLLV
                 if(!_b_music_already_playing){
-                    if(!player.isPlaying()){
-                        if(player.isLoaded()){
-                            player.unload();
-                        }
-                        player.load(_lcllv_sounds[_current_audio_pos]);
-                        _current_sound_which = _lcllv_sounds[_current_audio_pos];
-                        player.play();
-                        _b_music_already_playing = true;
-                        
-                        if(_current_audio_pos < _lcllv_sounds.size()){
-                            _current_audio_pos++;
-                        }else{
+                    if(player.isLoaded()){
+                        player.unload();
+                        if(_current_audio_pos >= _lcllv_sounds.size()-1){
                             _current_audio_pos = 0;
                             this->studyScenarioChangeCallback();
+                            break;
+                        }else{
+                            _current_audio_pos++;
                         }
                     }
+                    player.load(_lcllv_sounds[_current_audio_pos]);
+                    _current_sound_which = _lcllv_sounds[_current_audio_pos];
+                    player.play();
+                    _b_music_already_playing = true;
                 }else{
                     if(!player.isPlaying()){
                         _b_music_already_playing = false;
@@ -144,22 +141,20 @@ void ofApp::update(){
                 break;
 			case 9:     // LCLHV
                 if(!_b_music_already_playing){
-                    if(!player.isPlaying()){
-                        if(player.isLoaded()){
-                            player.unload();
-                        }
-                        player.load(_lclhv_sounds[_current_audio_pos]);
-                        _current_sound_which = _lclhv_sounds[_current_audio_pos];
-                        player.play();
-                        _b_music_already_playing = true;
-                        
-                        if(_current_audio_pos < _lclhv_sounds.size()){
-                            _current_audio_pos++;
-                        }else{
+                    if(player.isLoaded()){
+                        player.unload();
+                        if(_current_audio_pos >= _lclhv_sounds.size()-1){
                             _current_audio_pos = 0;
                             this->studyScenarioChangeCallback();
+                            break;
+                        }else{
+                            _current_audio_pos++;
                         }
                     }
+                    player.load(_lclhv_sounds[_current_audio_pos]);
+                    _current_sound_which = _lclhv_sounds[_current_audio_pos];
+                    player.play();
+                    _b_music_already_playing = true;
                 }else{
                     if(!player.isPlaying()){
                         _b_music_already_playing = false;
@@ -168,22 +163,20 @@ void ofApp::update(){
                 break;
 			case 11:    // HCLLV
                 if(!_b_music_already_playing){
-                    if(!player.isPlaying()){
-                        if(player.isLoaded()){
-                            player.unload();
-                        }
-                        player.load(_hcllv_sounds[_current_audio_pos]);
-                        _current_sound_which = _hcllv_sounds[_current_audio_pos];
-                        player.play();
-                        _b_music_already_playing = true;
-                        
-                        if(_current_audio_pos < _hcllv_sounds.size()){
-                            _current_audio_pos++;
-                        }else{
+                    if(player.isLoaded()){
+                        player.unload();
+                        if(_current_audio_pos >= _hcllv_sounds.size()-1){
                             _current_audio_pos = 0;
                             this->studyScenarioChangeCallback();
+                            break;
+                        }else{
+                            _current_audio_pos++;
                         }
                     }
+                    player.load(_hcllv_sounds[_current_audio_pos]);
+                    _current_sound_which = _hcllv_sounds[_current_audio_pos];
+                    player.play();
+                    _b_music_already_playing = true;
                 }else{
                     if(!player.isPlaying()){
                         _b_music_already_playing = false;
@@ -192,29 +185,27 @@ void ofApp::update(){
                 break;
 			case 13:    // HCLHV
                 if(!_b_music_already_playing){
-                    if(!player.isPlaying()){
-                        if(player.isLoaded()){
-                            player.unload();
-                        }
-                        player.load(_hclhv_sounds[_current_audio_pos]);
-                        _current_sound_which = _hclhv_sounds[_current_audio_pos];
-                        player.play();
-                        _b_music_already_playing = true;
-                        
-                        if(_current_audio_pos < _hclhv_sounds.size()){
-                            _current_audio_pos++;
-                        }else{
+                    if(player.isLoaded()){
+                        player.unload();
+                        if(_current_audio_pos >= _hclhv_sounds.size()-1){
                             _current_audio_pos = 0;
                             this->studyScenarioChangeCallback();
+                            break;
+                        }else{
+                            _current_audio_pos++;
                         }
                     }
+                    player.load(_hclhv_sounds[_current_audio_pos]);
+                    _current_sound_which = _hclhv_sounds[_current_audio_pos];
+                    player.play();
+                    _b_music_already_playing = true;
                 }else{
                     if(!player.isPlaying()){
                         _b_music_already_playing = false;
                     }
                 }
-				break;
-			case 5:     // 3 minutes pause
+                break;
+			case 5:     // 5 minutes pause
 			case 8:
 			case 10:
 			case 12:
@@ -240,7 +231,7 @@ void ofApp::draw(){
 	float h = ofGetHeight();
 	
 	if(_nback_visible){
-		nback.draw(w/2, h/2-h/4, w/2, w/2);
+		nback.draw(w/2, h/2-h/5, w/2, w/2);
 	}
 	if(_whole_study_running){
         this->drawStringCenterWithRatio(_study_scene_main_phrase,
@@ -253,7 +244,7 @@ void ofApp::draw(){
 			case 1:     // climate init (intro)
 			case 2:     // 1 minute calib
 			case 3:     // practice intro
-			case 5:     // 3 minutes pause
+			case 5:     // 5 minutes pause
 			case 8:
 			case 10:
 			case 12:
@@ -575,8 +566,13 @@ void ofApp::studyScenarioChangeCallback(){
 	// observe the value of _study_scenario_count to control what to
 	// display and what to change in the system
     if(_whole_study_running){
-        _study_scenario_count >= 12 ? _study_scenario_count = 0
-                                    : _study_scenario_count++;
+        if(_study_scenario_counts.size()){
+            _study_scenario_counts.erase(_study_scenario_counts.begin());
+            _study_scenario_count = _study_scenario_counts[0];
+        }else{
+            _study_scenario_count = 0;
+            _recording = false;
+        }
     }
     _prev_progress_time = 0.0f;
     _next_progress_time = 0.0f;
@@ -611,7 +607,7 @@ void ofApp::studyScenarioChangeCallback(){
             
             if(_whole_study_running){
                 _prev_progress_time = ofGetElapsedTimef();
-                _next_progress_time = _prev_progress_time + 60 * 10; // 600 = sec = 10mins
+                _next_progress_time = _prev_progress_time + STUDY_INTRO_TIME / 1000; // 10mins
                 _thread = std::thread([this](){
                     std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_INTRO_TIME));
                     this->studyScenarioChangeCallback();
@@ -643,7 +639,7 @@ void ofApp::studyScenarioChangeCallback(){
             if(_whole_study_running){
                 _thread = std::thread([this](){
                     _prev_progress_time = ofGetElapsedTimef();
-                    _next_progress_time = _prev_progress_time + 60; // 60 = sec = 1min
+                    _next_progress_time = _prev_progress_time + STUDY_CALIB_TIME / 1000; // 60 @ sec = 1min
                     std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_CALIB_TIME));
                     this->studyScenarioChangeCallback();
                 });
@@ -671,12 +667,13 @@ void ofApp::studyScenarioChangeCallback(){
             }
             _study_scene_main_phrase = STUDY_PRACTICE_MESSAGE_MAIN;
             _study_scene_sub_phrase = STUDY_PRACTICE_MESSAGE_SUB;
+            nback.resizeSize(NBACK_COUNT_PRAC);
             _nback_visible = true;
             _nback_running = true;
             
             if(_whole_study_running){
                 _prev_progress_time = ofGetElapsedTimef();
-                _next_progress_time = _prev_progress_time + 60; // 60 = sec = 1min
+                _next_progress_time = _prev_progress_time + STUDY_CALIB_TIME / 1000; // 60 @ sec = 1min
                 _thread = std::thread([this](){
                     std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_CALIB_TIME));
                     this->studyScenarioChangeCallback();
@@ -727,8 +724,9 @@ void ofApp::studyScenarioChangeCallback(){
             }
             _study_scene_main_phrase = STUDY_RUNNING_MESSAGE_MAIN;
             _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB;
-            //_nback_visible = true;
-            //_nback_running = true;
+            nback.resizeSize(NBACK_COUNT_EASY);
+            _nback_visible = true;
+            _nback_running = true;
             _b_music_already_playing = false;
             break;
         case 9:     // LCLHV
@@ -751,6 +749,7 @@ void ofApp::studyScenarioChangeCallback(){
             }
             _study_scene_main_phrase = STUDY_RUNNING_MESSAGE_MAIN;
             _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB;
+            nback.resizeSize(NBACK_COUNT_EASY);
             _nback_visible = true;
             _nback_running = true;
             _b_music_already_playing = false;
@@ -775,6 +774,7 @@ void ofApp::studyScenarioChangeCallback(){
             }
             _study_scene_main_phrase = STUDY_RUNNING_MESSAGE_MAIN;
             _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB;
+            nback.resizeSize(NBACK_COUNT_DIFF);
             _nback_visible = true;
             _nback_running = true;
             _b_music_already_playing = false;
@@ -799,6 +799,7 @@ void ofApp::studyScenarioChangeCallback(){
             }
             _study_scene_main_phrase = STUDY_RUNNING_MESSAGE_MAIN;
             _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB;
+            nback.resizeSize(NBACK_COUNT_DIFF);
             _nback_visible = true;
             _nback_running = true;
             _b_music_already_playing = false;
@@ -831,7 +832,7 @@ void ofApp::studyScenarioChangeCallback(){
             
             if(_whole_study_running){
                 _prev_progress_time = ofGetElapsedTimef();
-                _next_progress_time = _prev_progress_time + 60 * 3; // 180 = sec = 3mins
+                _next_progress_time = _prev_progress_time + STUDY_INTVL_TIME / 1000; // 5mins
                 _thread = std::thread([this](){
                     std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_INTVL_TIME));
                     this->studyScenarioChangeCallback();
@@ -860,12 +861,13 @@ void ofApp::studyScenarioChangeCallback(){
             }
             _study_scene_main_phrase = STUDY_MAIN_MESSAGE_MAIN;
             _study_scene_sub_phrase = STUDY_MAIN_MESSAGE_SUB;
+            nback.resizeSize(NBACK_COUNT_PRAC);
             _nback_visible = true;
             _nback_running = true;
             
             if(_whole_study_running){
                 _prev_progress_time = ofGetElapsedTimef();
-                _next_progress_time = _prev_progress_time + 60; // 60 = sec = 1min
+                _next_progress_time = _prev_progress_time + STUDY_CALIB_TIME / 1000; // 60 @ sec = 1min
                 _thread = std::thread([this](){
                     std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_CALIB_TIME));
                     this->studyScenarioChangeCallback();
@@ -898,6 +900,8 @@ void ofApp::studyScenarioChangeCallback(){
             _nback_running = false;
             
             if(_whole_study_running){
+                _prev_progress_time = ofGetElapsedTimef();
+                _next_progress_time = _prev_progress_time + STUDY_CALIB_TIME / 1000; // 60 @ sec = 1min
                 _thread = std::thread([this](){
                     std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_CALIB_TIME));
                     this->studyScenarioChangeCallback();
@@ -1050,6 +1054,41 @@ void ofApp::recordingCallback(bool & val){
     cout << __PRETTY_FUNCTION__ << val << endl;
 #endif
     if(val){    // START
+        _study_scenario_counts.clear();
+        for(int i=0; i<15; i++){
+            _study_scenario_counts.push_back(i);
+        }
+        // check xml file to store previous study order (order.xml, latin square)
+        if(!studyOrderXml.load(STUDY_ORDER_KEEPER_XML)){
+            // make new xml and save it
+            studyOrderXml.clear();
+            auto child = studyOrderXml.appendChild("order");
+//		 * 7  - LCLLV
+//		 * 9  - LCLHV
+//		 * 11 - HCLLV
+//		 * 13 - HCLHV
+            child.appendChild("first").set(7);
+            child.appendChild("second").set(9);
+            child.appendChild("third").set(11);
+            child.appendChild("fourth").set(13);
+            studyOrderXml.save(STUDY_ORDER_KEEPER_XML);
+        }else{
+            auto order = studyOrderXml.findFirst("order");
+            if(order){
+                _study_scenario_counts[7] = order.getChild("first").getIntValue();
+                _study_scenario_counts[9] = order.getChild("second").getIntValue();
+                _study_scenario_counts[11] = order.getChild("third").getIntValue();
+                _study_scenario_counts[13] = order.getChild("fourth").getIntValue();
+                // update xml and save it
+                studyOrderXml.clear();
+                auto child = studyOrderXml.appendChild("order");
+                child.appendChild("first").set(_study_scenario_counts[9]);
+                child.appendChild("second").set(_study_scenario_counts[11]);
+                child.appendChild("third").set(_study_scenario_counts[13]);
+                child.appendChild("fourth").set(_study_scenario_counts[7]);
+                studyOrderXml.save(STUDY_ORDER_KEEPER_XML);
+            }
+        }
         if(!ofFilePath::isAbsolute(_file_path.get())){
             _recording_path = ofFilePath::getAbsolutePath(_file_path.get());
         }else{

@@ -20,23 +20,34 @@
 #define HCLLV_PATH "stimuli/HCLLV"
 #define LCLHV_PATH "stimuli/LCLHV"
 #define LCLLV_PATH "stimuli/LCLLV"
+#define STUDY_ORDER_KEEPER_XML "order.xml"
 
 // TIMING_SETUP
-#define STUDY_INTRO_TIME 600000     // 10 minutes in MS
-#define STUDY_CALIB_TIME 60000      // 1 minute in MS
-#define STUDY_INTVL_TIME 180000     // 3 minutes in MS
+// to run software at the normal mode, comment three lines in below out
+// and bring another three lines back active
+// 4_DEBUG_PURPOSE_BEGIN
+#define STUDY_INTRO_TIME 60000
+#define STUDY_CALIB_TIME 60000
+#define STUDY_INTVL_TIME 60000
+// 4_DEBUG_PURPOSE_END
+
+//#define STUDY_INTRO_TIME 600000     // 10 minutes in MS
+//#define STUDY_CALIB_TIME 60000      // 1 minute in MS
+//#define STUDY_INTVL_TIME 300000     // 5 minutes in MS
 
 // STUDY_SETUP
 #define TRACKS_FOR_EACH_SESSION 3
-#define SOUND_SAMPLING_RATE 44100
-#define SOUND_BUFFER_SIZE 256
+#define SOUND_SAMPLING_RATE 48000
+#define SOUND_BUFFER_SIZE 1024
 
-#define NBACK_BACK_COUNT 3
 // the time for each round in Nback task can be calculated by
 // NBACK_CHAR_TIME_MS + NBACK_BLANK_TIME_MS
 #define NBACK_CHAR_TIME_MS 500
 #define NBACK_BLANK_TIME_MS 2000
 #define NBACK_RANDOMNESS_RATE 0.2
+#define NBACK_COUNT_EASY 2
+#define NBACK_COUNT_DIFF 4
+#define NBACK_COUNT_PRAC 3
 
 #define STUDY_INTRO_MESSAGE_MAIN "Stay there..."
 #define STUDY_INTRO_MESSAGE_SUB "Just relax and wait for study starts (10mins)"
@@ -48,8 +59,8 @@
 #define STUDY_MAIN_MESSAGE_SUB "Once the gauge in below is over, a practice session starts."
 #define STUDY_RUNNING_MESSAGE_MAIN "Shhh... listen to this."
 #define STUDY_RUNNING_MESSAGE_SUB ""
-#define STUDY_INTERVAL_MESSAGE_MAIN "Break time. Sit back and relax."
-#define STUDY_INTERVAL_MESSAGE_SUB "Wait until the next session starts. (3mins)"
+#define STUDY_INTERVAL_MESSAGE_MAIN "Break time. Please go through the TLX study."
+#define STUDY_INTERVAL_MESSAGE_SUB "then wait until the next session starts. (5mins)"
 #define STUDY_END_MESSAGE_MAIN "Thanks for your participation!"
 #define STUDY_END_MESSAGE_SUB "You can proceed to the questionnaire section."
 
@@ -145,6 +156,7 @@ class ofApp : public ofBaseApp{
         std::thread _thread;
         const std::string _thread_name = "WORKER_THREAD";
         unsigned _study_scenario_count;
+        std::vector<unsigned> _study_scenario_counts;
 		/*
 		 * SCENES:
 		 * 0  - none
@@ -167,6 +179,7 @@ class ofApp : public ofBaseApp{
         std::string _study_state;
         float _prev_progress_time;
         float _next_progress_time;
+        ofXml studyOrderXml;
         
         // AUDIO MANAGEMENT
         void audioOut(ofSoundBuffer & buffer);
