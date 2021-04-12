@@ -22,6 +22,9 @@
 #define LCLLV_PATH "stimuli/LCLLV"
 #define STUDY_ORDER_KEEPER_XML "order.xml"
 
+// flatfield image file name
+#define SEEK_FLATFIELD_FILENAME "flatfield.png"
+
 // TIMING_SETUP
 // 4_DEBUG_PURPOSE_BEGIN
 //#define STUDY_INTRO_TIME 60000

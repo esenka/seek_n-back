@@ -606,6 +606,14 @@ void ofApp::studyScenarioChangeCallback(){
             _study_scene_sub_phrase = STUDY_INTRO_MESSAGE_SUB;
             
             if(_whole_study_running){
+                if(seek.isInitialized()){
+                    seek.close();
+                }
+                seek.setCreateFlatfield(STUDY_INTRO_TIME / 1000 * 6,
+                                        STUDY_INTVL_TIME / 1000 * 6,
+                                        _recording_path+"/"+SEEK_FLATFIELD_FILENAME);
+                seek.setup(OFX_SEEK_THERMAL_CAM_COMPACT);
+                
                 _prev_progress_time = ofGetElapsedTimef();
                 _next_progress_time = _prev_progress_time + STUDY_INTRO_TIME / 1000; // 10mins
                 _thread = std::thread([this](){
@@ -672,6 +680,16 @@ void ofApp::studyScenarioChangeCallback(){
             _nback_running = true;
             
             if(_whole_study_running){
+                if(seek.isInitialized()){
+                    seek.close();
+                    if(!ofFile::doesFileExist(_recording_path+"/"+SEEK_FLATFIELD_FILENAME)){
+                        seek.setup(OFX_SEEK_THERMAL_CAM_COMPACT,
+                                   _recording_path+"/"+SEEK_FLATFIELD_FILENAME);
+                    }else{
+                        seek.setup(OFX_SEEK_THERMAL_CAM_COMPACT);
+                    }
+                }
+                
                 _prev_progress_time = ofGetElapsedTimef();
                 _next_progress_time = _prev_progress_time + STUDY_CALIB_TIME / 1000; // 60 @ sec = 1min
                 _thread = std::thread([this](){
