@@ -23,17 +23,15 @@
 #define STUDY_ORDER_KEEPER_XML "order.xml"
 
 // TIMING_SETUP
-// to run software at the normal mode, comment three lines in below out
-// and bring another three lines back active
 // 4_DEBUG_PURPOSE_BEGIN
-#define STUDY_INTRO_TIME 60000
-#define STUDY_CALIB_TIME 60000
-#define STUDY_INTVL_TIME 60000
+//#define STUDY_INTRO_TIME 60000
+//#define STUDY_CALIB_TIME 60000
+//#define STUDY_INTVL_TIME 60000
 // 4_DEBUG_PURPOSE_END
 
-//#define STUDY_INTRO_TIME 600000     // 10 minutes in MS
-//#define STUDY_CALIB_TIME 60000      // 1 minute in MS
-//#define STUDY_INTVL_TIME 300000     // 5 minutes in MS
+#define STUDY_INTRO_TIME 600000     // 10 minutes in MS
+#define STUDY_CALIB_TIME 60000      // 1 minute in MS
+#define STUDY_INTVL_TIME 300000     // 5 minutes in MS
 
 // STUDY_SETUP
 #define TRACKS_FOR_EACH_SESSION 3
