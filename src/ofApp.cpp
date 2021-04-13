@@ -609,8 +609,8 @@ void ofApp::studyScenarioChangeCallback(){
                 if(seek.isInitialized()){
                     seek.close();
                 }
-                seek.setCreateFlatfield(STUDY_INTRO_TIME / 1000 * 6,
-                                        STUDY_INTVL_TIME / 1000 * 6,
+                seek.setCreateFlatfield(STUDY_INTRO_TIME / 1000 * 3,
+                                        STUDY_INTVL_TIME / 1000 * 3,
                                         _recording_path+"/"+SEEK_FLATFIELD_FILENAME);
                 seek.setup(OFX_SEEK_THERMAL_CAM_COMPACT);
                 
