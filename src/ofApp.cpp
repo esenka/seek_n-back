@@ -719,7 +719,7 @@ void ofApp::studyScenarioChangeCallback(){
                                         );
             }
             _study_scene_main_phrase = STUDY_RUNNING_MESSAGE_MAIN;
-            _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB;
+            _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB_PRAC;
             _b_music_already_playing = false;
             break;
         case 7:     // LCLLV
@@ -741,7 +741,7 @@ void ofApp::studyScenarioChangeCallback(){
                                         );
             }
             _study_scene_main_phrase = STUDY_RUNNING_MESSAGE_MAIN;
-            _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB;
+            _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB_LCL;
             nback.resizeSize(NBACK_COUNT_EASY);
             _nback_visible = true;
             _nback_running = true;
@@ -766,7 +766,7 @@ void ofApp::studyScenarioChangeCallback(){
                                         );
             }
             _study_scene_main_phrase = STUDY_RUNNING_MESSAGE_MAIN;
-            _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB;
+            _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB_LCL;
             nback.resizeSize(NBACK_COUNT_EASY);
             _nback_visible = true;
             _nback_running = true;
@@ -791,7 +791,7 @@ void ofApp::studyScenarioChangeCallback(){
                                         );
             }
             _study_scene_main_phrase = STUDY_RUNNING_MESSAGE_MAIN;
-            _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB;
+            _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB_HCL;
             nback.resizeSize(NBACK_COUNT_DIFF);
             _nback_visible = true;
             _nback_running = true;
@@ -816,7 +816,7 @@ void ofApp::studyScenarioChangeCallback(){
                                         );
             }
             _study_scene_main_phrase = STUDY_RUNNING_MESSAGE_MAIN;
-            _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB;
+            _study_scene_sub_phrase = STUDY_RUNNING_MESSAGE_SUB_HCL;
             nback.resizeSize(NBACK_COUNT_DIFF);
             _nback_visible = true;
             _nback_running = true;

@@ -60,6 +60,11 @@
 #define STUDY_MAIN_MESSAGE_SUB "Once the gauge in below is over, a practice session starts."
 #define STUDY_RUNNING_MESSAGE_MAIN "Shhh... listen to this."
 #define STUDY_RUNNING_MESSAGE_SUB ""
+
+#define STUDY_RUNNING_MESSAGE_SUB_PRAC "Keep working on the N-back task (3-back)"
+#define STUDY_RUNNING_MESSAGE_SUB_LCL "Keep working on the N-back task (2-back)"
+#define STUDY_RUNNING_MESSAGE_SUB_HCL "Keep working on the N-back task (4-back)"
+
 #define STUDY_INTERVAL_MESSAGE_MAIN "Break time. Please go through the TLX study."
 #define STUDY_INTERVAL_MESSAGE_SUB "then wait until the next session starts. (5mins)"
 #define STUDY_END_MESSAGE_MAIN "Thanks for your participation!"
