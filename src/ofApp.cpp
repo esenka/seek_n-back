@@ -683,12 +683,12 @@ void ofApp::studyScenarioChangeCallback(){
             if(_whole_study_running){
                 if(seek.isInitialized()){
                     seek.close();
-                    if(!ofFile::doesFileExist(_recording_path+"/"+SEEK_FLATFIELD_FILENAME)){
-                        seek.setup(OFX_SEEK_THERMAL_CAM_COMPACT,
-                                   _recording_path+"/"+SEEK_FLATFIELD_FILENAME);
-                    }else{
+//                    if(!ofFile::doesFileExist(_recording_path+"/"+SEEK_FLATFIELD_FILENAME)){
+//                        seek.setup(OFX_SEEK_THERMAL_CAM_COMPACT,
+//                                   _recording_path+"/"+SEEK_FLATFIELD_FILENAME);
+//                    }else{
                         seek.setup(OFX_SEEK_THERMAL_CAM_COMPACT);
-                    }
+//                    }
                 }
                 
                 _prev_progress_time = ofGetElapsedTimef();
