@@ -573,7 +573,6 @@ void ofApp::studyScenarioChangeCallback(){
             _study_scenario_count = _study_scenario_counts[0];
         }else{
             _study_scenario_count = 0;
-            _recording = false;
         }
     }
     _prev_progress_time = 0.0f;
@@ -612,7 +611,7 @@ void ofApp::studyScenarioChangeCallback(){
                     seek.close();
                 }
                 seek.setCreateFlatfield(STUDY_INTRO_TIME / 1000 * 3,
-                                        STUDY_INTVL_TIME / 1000 * 3,
+                                        STUDY_INTVL_TIME / 1000 * 2,
                                         _recording_path+"/"+SEEK_FLATFIELD_FILENAME);
                 seek.setup(OFX_SEEK_THERMAL_CAM_COMPACT);
                 
@@ -922,6 +921,7 @@ void ofApp::studyScenarioChangeCallback(){
             if(_whole_study_running){
                 _prev_progress_time = ofGetElapsedTimef();
                 _next_progress_time = _prev_progress_time + STUDY_CALIB_TIME / 1000; // 60 @ sec = 1min
+                _recording = false;
                 _thread = std::thread([this](){
                     std::this_thread::sleep_for(std::chrono::milliseconds(STUDY_CALIB_TIME));
                     this->studyScenarioChangeCallback();

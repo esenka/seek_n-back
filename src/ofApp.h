@@ -32,7 +32,7 @@
 //#define STUDY_INTVL_TIME 60000
 // 4_DEBUG_PURPOSE_END
 
-#define STUDY_INTRO_TIME 60000     // 10 minutes in MS
+#define STUDY_INTRO_TIME 600000     // 10 minutes in MS
 #define STUDY_CALIB_TIME 60000      // 1 minute in MS
 #define STUDY_INTVL_TIME 300000     // 5 minutes in MS
 

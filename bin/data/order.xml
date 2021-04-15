@@ -1,14 +1,7 @@
 <?xml version="1.0"?>
 <order>
-<<<<<<< HEAD
 	<first>13</first>
 	<second>7</second>
 	<third>9</third>
 	<fourth>11</fourth>
-=======
-	<first>11</first>
-	<second>13</second>
-	<third>7</third>
-	<fourth>9</fourth>
->>>>>>> cc493588957a4e6fb6a71d21e45512a891771ed9
 </order>
