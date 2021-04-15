@@ -10173,17 +10173,16 @@ fi
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_calib3d.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libquirc.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_features2d.a</string>
-						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_dnn.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_core.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_imgcodecs.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_highgui.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_video.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_ml.a</string>
-						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibprotobuf.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_objdetect.a</string>
+						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libzlib.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_flann.a</string>
-						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libittnotify.a</string>
+						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libtegra_hal.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_imgproc.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibjpeg-turbo.a</string>
 						<string>../../../addons/ofxSeekThermal/libs/libusb/lib/osx/usb-1.0.0.a</string>
@@ -13500,17 +13499,16 @@ fi
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_calib3d.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libquirc.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_features2d.a</string>
-						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_dnn.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_core.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_imgcodecs.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_highgui.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_video.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_ml.a</string>
-						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibprotobuf.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_objdetect.a</string>
+						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libzlib.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_flann.a</string>
-						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libittnotify.a</string>
+						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libtegra_hal.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_imgproc.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibjpeg-turbo.a</string>
 						<string>../../../addons/ofxSeekThermal/libs/libusb/lib/osx/usb-1.0.0.a</string>
@@ -13666,17 +13664,16 @@ fi
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_calib3d.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libquirc.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_features2d.a</string>
-						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_dnn.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_core.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_imgcodecs.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_highgui.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_video.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_ml.a</string>
-						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibprotobuf.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_objdetect.a</string>
+						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libzlib.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_flann.a</string>
-						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libittnotify.a</string>
+						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libtegra_hal.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/libopencv_imgproc.a</string>
 						<string>../../../addons/ofxOpenCv/libs/opencv/lib/osx/liblibjpeg-turbo.a</string>
 						<string>../../../addons/ofxSeekThermal/libs/libusb/lib/osx/usb-1.0.0.a</string>
