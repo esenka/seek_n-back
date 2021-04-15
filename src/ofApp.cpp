@@ -11,7 +11,7 @@ void ofApp::setup(){
 	// OpenCV false color list:
 	// https://docs.opencv.org/3.4/d3/d50/group__imgproc__colormap.html
     seek.setCVColorMap(cv::COLORMAP_BONE);
-    seek.setVerbose(false);
+    seek.setVerbose(true);
     _img.allocate(THERMAL_WIDTH, THERMAL_HEIGHT, OF_IMAGE_COLOR);
     ofAddListener(seek.new_frame_evt, this, &ofApp::seekNewFrameCallback);
     
@@ -408,7 +408,9 @@ void ofApp::seekNewFrameCallback(bool &val){
             imgfilename << std::internal << std::setfill('0') << std::setw(6);
             imgfilename << _seek_frame_number;
             imgfilename << ".jpg";
-            ofSaveImage(video.getPixels(),
+            ofPixels pix = video.getPixels();
+            pix.resize(THERMAL_WIDTH, THERMAL_HEIGHT);
+            ofSaveImage(pix,
                         _recording_path + "/" + imgfilename.str());
             _seek_frame_number++;
         }
